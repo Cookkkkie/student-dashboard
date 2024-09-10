@@ -1,13 +1,23 @@
 package com.example.main;
 
-public class User {
-    int userID;
-    String name;
-    String lastName;
-    String email;
-    String password;
+import jakarta.persistence.*;
 
-    public void setId(long l) {
-        this.userID = (int) l;
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "userID")
+    private Long id;
+
+    private String name;
+    private String surname;
+    private String email;
+    private String password;
+
+    // Getters and Setters
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
