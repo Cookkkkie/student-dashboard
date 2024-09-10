@@ -6,4 +6,8 @@ public class User {
     String lastName;
     String email;
     String password;
+
+    public void setId(long l) {
+        this.userID = (int) l;
+    }
 }
