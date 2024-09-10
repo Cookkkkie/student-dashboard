@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.Locale;
 
 @Component
-public class MySqlExample {
+public class MySqlDatabase {
 
     private static String host = "mysql-8421f11-aleksey-af53.g.aivencloud.com";
     private static String port = "14859";
@@ -31,7 +31,7 @@ public class MySqlExample {
                 case "-port": port = args[++i]; break;
             }
         }
-        // JDBC allows to have nullable username and password
+
         if (host == null || port == null || databaseName == null) {
             System.out.println("Host, port, database information is required");
             return;
@@ -43,11 +43,10 @@ public class MySqlExample {
              final ResultSet resultSet = statement.executeQuery("SELECT version() AS version")) {
 
             while (resultSet.next()) {
-                System.out.println("Version: " + resultSet.getString("version"));
+                System.out.println("Version: "+ resultSet.getString("version"));
             }
         } catch (SQLException e) {
-            System.out.println("Connection failure.");
-            e.printStackTrace();
+            System.out.println("Connection error: "+ e);
         }
     }
 
