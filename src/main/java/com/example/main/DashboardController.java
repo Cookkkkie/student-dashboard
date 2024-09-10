@@ -10,7 +10,7 @@ public class DashboardController {
 
 	public static void main(String[] args) throws SQLException {
 		SpringApplication.run(DashboardController.class, args);
-		DATABASE.main(args);
+		MySqlExample.createTables();
 	}    
 
 }
