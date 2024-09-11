@@ -104,4 +104,18 @@ public class UserServiceImpl implements UserService{
             throw new UserServiceLogicException();
         }
     }
+
+    @Override
+    public ResponseEntity<ApiResponseDto<?>> getUserByID(int id, String password) {
+        try {
+            User user = userRepository.findById((long)id).orElseThrow(() -> new UserNotFoundException("Not found"));
+            if(user.getPassword().equals(password)){
+                return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), user));
+            }else{
+                throw new UserNotFoundException("Wrong password");
+            }
+        } catch (UserNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

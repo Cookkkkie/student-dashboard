@@ -23,9 +23,12 @@ public class UserController {
     public ResponseEntity<ApiResponseDto<?>> createUser(@Valid @RequestBody UserDetailsRequestDto userDetailsRequestDto) throws UserAlreadyExistsException, UserServiceLogicException {
         return userService.createUser(userDetailsRequestDto);
     }
-
+    @PostMapping("get/{id}")
+    public ResponseEntity<ApiResponseDto<?>> getAccountById(@PathVariable int id, @RequestParam String password) throws UserNotFoundException, UserServiceLogicException {
+        return userService.getUserByID(id, password);
+    }
     @GetMapping("/get/all")
-    public ResponseEntity<ApiResponseDto<?>> getAllUsers() throws UserServiceLogicException, UserServiceLogicException {
+    public ResponseEntity<ApiResponseDto<?>> getAllUsers() throws  UserServiceLogicException {
         return userService.getAllUsers();
     }
 
