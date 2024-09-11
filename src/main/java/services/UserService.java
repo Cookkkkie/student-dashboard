@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserService {
-    ResponseEntity<ApiResponseDto<?>> deleteUser(long id)
+    ResponseEntity<ApiResponseDto<?>> deleteUser(int id)
             throws UserNotFoundException, UserServiceLogicException;
 }

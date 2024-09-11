@@ -8,7 +8,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userID")
-    private Long id;
+    private int id;
 
     private String name;
     private String surname;
@@ -17,7 +17,11 @@ public class User {
 
     // Getters and Setters
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
+    }
+
+    public int getID() {
+        return this.id;
     }
 }

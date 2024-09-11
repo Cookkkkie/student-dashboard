@@ -6,6 +6,7 @@ import dtos.ApiResponseStatus;
 import exceptions.UserNotFoundException;
 import exceptions.UserServiceLogicException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import repository.UserRepository;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
+    @Autowired
     private final UserRepository userRepository;
 
     public UserServiceImpl(UserRepository userRepository) {
@@ -22,9 +24,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<ApiResponseDto<?>> deleteUser(long id) throws UserServiceLogicException {
+    public ResponseEntity<ApiResponseDto<?>> deleteUser(int id) throws UserServiceLogicException {
         try {
-            User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found with id " + id));
+            User user = userRepository.findById((long) id).orElseThrow(() -> new UserNotFoundException("User not found with id " + id));
 
             userRepository.delete(user);
 
@@ -37,4 +39,10 @@ public class UserServiceImpl implements UserService {
             throw new UserServiceLogicException("An error occurred while deleting the user account.");
         }
     }
+
+    public ResponseEntity<ApiResponseDto<?>> createUser(User user) {
+        return null;
+//        return userRepository.save(user);
+    }
+
 }

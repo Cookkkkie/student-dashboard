@@ -28,11 +28,11 @@ public class UserServiceImplTest {
 	public void deleteUser_UserExists_Success() {
 		openMocks(this);
 		User user = new User();
-		user.setId(1L);
+		user.setId(1);
 
 		when(userRepository.findById(1L)).thenReturn(Optional.of(user));
 
-		ResponseEntity<ApiResponseDto<?>> response = userService.deleteUser(1L);
+		ResponseEntity<ApiResponseDto<?>> response = userService.deleteUser(1);
 
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		assertEquals(ApiResponseStatus.SUCCESS.name(), response.getBody().getStatus());
@@ -45,7 +45,7 @@ public class UserServiceImplTest {
 
 		when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
-		ResponseEntity<ApiResponseDto<?>> response = userService.deleteUser(1L);
+		ResponseEntity<ApiResponseDto<?>> response = userService.deleteUser(1);
 
 		assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 		assertEquals(ApiResponseStatus.FAIL.name(), response.getBody().getStatus());
