@@ -2,6 +2,7 @@ package com.example.main;
 
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -97,5 +98,24 @@ public class MySqlDatabase {
         statement.execute(createToDoList);
 
     }
-
+    public static User getByID(int ID) throws SQLException {
+        final Connection connection =
+                DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + databaseName + "?sslmode=require", userName, password);
+        final Statement statement = connection.createStatement();
+        String getUser = "SELECT * FROM users WHERE userID = " + ID + ";";
+        ResultSet result = statement.executeQuery(getUser);
+        User foundUser = new User();
+        if(!result.next()){
+            return null;
+        }
+        //probably not a good idea to give away the password, but other internal processes might need it for validation.
+        while(result.next()){
+            foundUser.userID = result.getInt("userID");
+            foundUser.email = result.getString("password");
+            foundUser.name = result.getString("name");
+            foundUser.password = result.getString("password");
+            foundUser.lastName  = result.getString("lastname");
+        }
+        return foundUser;
+    }
 }

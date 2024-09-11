@@ -1,16 +1,26 @@
 package com.example.main;
-import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import java.util.Optional;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+
+
 
 @RestController
 @RequestMapping("user/")
 public class UserController {
+    @Autowired UserService service;
+    @PostMapping("get/{id}")
+    public ResponseEntity<User> getAccountById(@PathVariable int id, @RequestParam String password){
+        User response = service.getByID(id);
+       if(response != null) {
+           return ResponseEntity.ok(response);
+       }
+        return ResponseEntity.notFound().build();
+    }
 
     @Autowired
     private UserService userService;
@@ -22,3 +32,4 @@ public class UserController {
     }
 
 }
+
