@@ -1,4 +1,6 @@
 package dtos;
 
-public class ApiResponseStatus {
+public enum ApiResponseStatus {
+    SUCCESS,
+    FAIL
 }

@@ -1,5 +1,6 @@
 package com.example.main;
 
+import com.example.main.modals.User;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -60,7 +61,7 @@ public class MySqlDatabase {
         String createUsers = "CREATE TABLE IF NOT EXISTS users (" +
                 "userID INT AUTO_INCREMENT PRIMARY KEY," +
                 "name VARCHAR(100) NOT NULL," +
-                "lastName VARCHAR(100) NOT NULL," +
+                "last_name VARCHAR(100) NOT NULL," +
                 "email VARCHAR(255) NOT NULL UNIQUE," +
                 "password VARCHAR(255) NOT NULL" +
                 ");";
@@ -110,11 +111,11 @@ public class MySqlDatabase {
         }
         //probably not a good idea to give away the password, but other internal processes might need it for validation.
         while(result.next()){
-            foundUser.userID = result.getInt("userID");
-            foundUser.email = result.getString("password");
-            foundUser.name = result.getString("name");
-            foundUser.password = result.getString("password");
-            foundUser.lastName  = result.getString("lastname");
+            foundUser.setUserID(result.getInt("userID"));
+            foundUser.setEmail(result.getString("password"));
+            foundUser.setName(result.getString("name"));
+            foundUser.setPassword(result.getString("password"));
+            foundUser.setLast_name(result.getString("last_name"));
         }
         return foundUser;
     }
