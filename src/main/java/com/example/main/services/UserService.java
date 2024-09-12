@@ -1,10 +1,10 @@
-package services;
+package com.example.main.services;
 
 import com.example.main.Exceptions.UserAlreadyExistsException;
 import com.example.main.Exceptions.UserNotFoundException;
 import com.example.main.Exceptions.UserServiceLogicException;
-import dtos.ApiResponseDto;
-import dtos.UserDetailsRequestDto;
+import com.example.main.dtos.ApiResponseDto;
+import com.example.main.dtos.UserDetailsRequestDto;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

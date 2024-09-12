@@ -4,13 +4,13 @@ import com.example.main.Exceptions.UserAlreadyExistsException;
 
 import com.example.main.Exceptions.UserNotFoundException;
 import com.example.main.Exceptions.UserServiceLogicException;
-import dtos.ApiResponseDto;
-import dtos.UserDetailsRequestDto;
+import com.example.main.dtos.ApiResponseDto;
+import com.example.main.dtos.UserDetailsRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
-import services.UserService;
+import com.example.main.services.UserService;
 
 @RestController
 @RequestMapping("/api/users")

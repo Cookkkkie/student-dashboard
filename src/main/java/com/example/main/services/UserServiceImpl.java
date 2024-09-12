@@ -1,13 +1,13 @@
-package services;
+package com.example.main.services;
 
 import com.example.main.Exceptions.UserAlreadyExistsException;
 import com.example.main.Exceptions.UserNotFoundException;
 import com.example.main.Exceptions.UserServiceLogicException;
 import com.example.main.modals.User;
 import com.example.main.repository.UserRepository;
-import dtos.ApiResponseDto;
-import dtos.ApiResponseStatus;
-import dtos.UserDetailsRequestDto;
+import com.example.main.dtos.ApiResponseDto;
+import com.example.main.dtos.ApiResponseStatus;
+import com.example.main.dtos.UserDetailsRequestDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

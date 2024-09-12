@@ -1,9 +1,9 @@
-package services;
+package com.example.main.services;
 
 import com.example.main.modals.Assignment;
 import com.example.main.repository.AssignmentRepository;
-import dtos.ApiResponseDto;
-import dtos.ApiResponseStatus;
+import com.example.main.dtos.ApiResponseDto;
+import com.example.main.dtos.ApiResponseStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
