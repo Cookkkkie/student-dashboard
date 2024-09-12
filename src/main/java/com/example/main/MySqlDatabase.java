@@ -59,7 +59,7 @@ public class MySqlDatabase {
         final Statement statement = connection.createStatement();
 
         String createUsers = "CREATE TABLE IF NOT EXISTS users (" +
-                "userID INT AUTO_INCREMENT PRIMARY KEY," +
+                "userID INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
                 "name VARCHAR(100) NOT NULL," +
                 "last_name VARCHAR(100) NOT NULL," +
                 "email VARCHAR(255) NOT NULL UNIQUE," +
@@ -67,14 +67,14 @@ public class MySqlDatabase {
                 ");";
 
         String createCourse = "CREATE TABLE IF NOT EXISTS course (" +
-                "courseID INT AUTO_INCREMENT PRIMARY KEY," +
+                "courseID INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
                 "name VARCHAR(100) NOT NULL," +
                 "userID INT," +
                 "FOREIGN KEY (userID) REFERENCES users(userID) ON DELETE CASCADE" +
                 ");";
 
         String createAssignments = "CREATE TABLE IF NOT EXISTS assignments (" +
-                "assignmentID INT AUTO_INCREMENT PRIMARY KEY," +
+                "assignmentID INT NOT NULL  AUTO_INCREMENT PRIMARY KEY," +
                 "name VARCHAR(100) NOT NULL," +
                 "dueDate DATE NOT NULL," +
                 "status BOOLEAN," +
@@ -83,7 +83,7 @@ public class MySqlDatabase {
                 ");";
 
         String createToDoList = "CREATE TABLE IF NOT EXISTS ToDoList (" +
-                "listID INT AUTO_INCREMENT PRIMARY KEY," +
+                "listID INT NOT NULL AUTO_INCREMENT PRIMARY KEY," +
                 "name VARCHAR(100) NOT NULL," +
                 "content TEXT," +
                 "status BOOLEAN," +
