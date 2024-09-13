@@ -1,6 +1,7 @@
 package com.example.main;
 
 import com.example.main.modals.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -14,11 +15,20 @@ import java.util.Locale;
 @Component
 public class MySqlDatabase {
 
-    private static String host = "mysql-8421f11-aleksey-af53.g.aivencloud.com";
-    private static String port = "14859";
-    private static String databaseName = "defaultdb";
-    private static String userName = "avnadmin";
-    private static String password = "AVNS_RT3DRdiLVQwdYhqDD6s";
+    @Value("${spring.datasource.oracleucp.port-number}")
+    private static String port;
+
+    @Value("${spring.datasource.oracleucp.database-name}")
+    private static String databaseName;
+
+    @Value("${spring.datasource.url}")
+    private static String host;
+
+    @Value("${spring.datasource.username}")
+    private static String userName;
+
+    @Value("${spring.datasource.password}")
+    private static String password;
 
 
     public static void main(String[] args) throws ClassNotFoundException {
@@ -98,25 +108,5 @@ public class MySqlDatabase {
         statement.execute(createAssignments);
         statement.execute(createToDoList);
 
-    }
-    public static User getByID(int ID) throws SQLException {
-        final Connection connection =
-                DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + databaseName + "?sslmode=require", userName, password);
-        final Statement statement = connection.createStatement();
-        String getUser = "SELECT * FROM users WHERE userID = " + ID + ";";
-        ResultSet result = statement.executeQuery(getUser);
-        User foundUser = new User();
-        if(!result.next()){
-            return null;
-        }
-        //probably not a good idea to give away the password, but other internal processes might need it for validation.
-        while(result.next()){
-            foundUser.setUserID(result.getInt("userID"));
-            foundUser.setEmail(result.getString("password"));
-            foundUser.setName(result.getString("name"));
-            foundUser.setPassword(result.getString("password"));
-            foundUser.setLast_name(result.getString("last_name"));
-        }
-        return foundUser;
     }
 }
