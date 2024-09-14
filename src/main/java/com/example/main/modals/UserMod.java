@@ -14,7 +14,7 @@ public class UserMod {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userID;
+    private Long userID;
 
     @NotBlank
     @Column(name = "name", nullable = false)

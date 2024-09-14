@@ -15,12 +15,12 @@
 <div th:if="${succes}" class = "alert alert-success alert-dismissible fade show" role = "alert">
 
   <strong>Account created succesfully!</strong>
-  <a class = "ms-2" href = "/auth/login" > Login</a>
+  <a class = "ms-2" href = "/login" > Login</a>
   <button type = "button" class = "btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 
 </div>
 
-<form th:object = "${registerDTO}" th:action="@{/auth/register}" method="post">
+<form th:object = "${registerDTO}" th:action="@{/register}" method="post">
 
   <div class="form-group">
     <label for="name">Name</label>

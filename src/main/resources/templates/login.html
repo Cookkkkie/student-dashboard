@@ -27,45 +27,45 @@
                         <li class="nav-item" role="presentation">
                             <a class="nav-link active" id="login-tab" data-bs-toggle="tab" href="#login" role="tab">Login</a>
                         </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="signup-tab" data-bs-toggle="tab" href="#signup" role="tab">Signup</a>
-                        </li>
+<!--                        <li class="nav-item" role="presentation">-->
+<!--                            <a class="nav-link" id="signup-tab" data-bs-toggle="tab" href="#signup" role="tab">Signup</a>-->
+<!--                        </li>-->
                     </ul>
-                    <div class="tab-content mt-3">
-                        <div class="tab-pane fade show active" id="login" role="tabpanel">
-                            <form>
-                                <div class="mb-3">
-                                    <label for="login-username" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="login-username" name="username" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="login-password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="login-password" name="password" required>
-                                </div>
-                                <div class="d-grid">
-                                    <a type="submit" class="btn btn-primary" th:href="@{/dashboard}">Login</a>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="tab-pane fade" id="signup" role="tabpanel">
-                            <form>
-                                <div class="mb-3">
-                                    <label for="signup-username" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="signup-username" name="username" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="signup-email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="signup-email" name="email" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="signup-password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="signup-password" name="password" required>
-                                </div>
-                                <div class="d-grid">
-                                    <a type="submit" class="btn btn-primary" th:href="@{/dashboard}">Signup</a>
-                                </div>
-                            </form>
-                        </div>
+                    <div class="tab-pane fade show active" id="login" role="tabpanel">
+                        <form action="/login" method="POST">
+                            <div class="mb-3">
+                                <label for="login-email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="login-email" name="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="login-password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="login-password" name="password" required>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Login</button>
+                            </div>
+                        </form>
+                    </div>
+
+<!--                        <div class="tab-pane fade" id="signup" role="tabpanel">-->
+<!--                            <form>-->
+<!--                                <div class="mb-3">-->
+<!--                                    <label for="signup-username" class="form-label">Username</label>-->
+<!--                                    <input type="text" class="form-control" id="signup-username" name="username" required>-->
+<!--                                </div>-->
+<!--                                <div class="mb-3">-->
+<!--                                    <label for="signup-email" class="form-label">Email</label>-->
+<!--                                    <input type="email" class="form-control" id="signup-email" name="email" required>-->
+<!--                                </div>-->
+<!--                                <div class="mb-3">-->
+<!--                                    <label for="signup-password" class="form-label">Password</label>-->
+<!--                                    <input type="password" class="form-control" id="signup-password" name="password" required>-->
+<!--                                </div>-->
+<!--                                <div class="d-grid">-->
+<!--                                    <a type="submit" class="btn btn-primary" th:href="@{/dashboard}">Signup</a>-->
+<!--                                </div>-->
+<!--                            </form>-->
+<!--                        </div>-->
                     </div>
                 </div>
             </div>

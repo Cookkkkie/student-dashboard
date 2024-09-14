@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Slf4j
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<ApiResponseDto<?>> createUser(UserDetailsRequestDto newUserDetails)
             throws UserAlreadyExistsException, UserServiceLogicException {
         try{
-            if(userRepository.findByEmail(newUserDetails.getEmail()) != null){
+            if(userRepository.findByEmail(newUserDetails.getEmail()).isPresent()){
                 throw new UserAlreadyExistsException("User already exists " + newUserDetails.getEmail());
             }
             UserMod newUser = new UserMod(
@@ -130,11 +131,11 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
-        UserMod user = userRepository.findByEmail(email);
+        Optional<UserMod> user = userRepository.findByEmail(email);
 
-        if(user != null) {
-            var springUser = User.withUsername(user.getEmail())
-                    .password(user.getPassword())
+        if(user.isPresent()) {
+            var springUser = User.withUsername(user.get().getEmail())
+                    .password(user.get().getPassword())
                     .build();
 
             return springUser;
