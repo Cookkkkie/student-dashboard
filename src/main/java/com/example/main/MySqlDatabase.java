@@ -1,10 +1,7 @@
 package com.example.main;
 
-import com.example.main.modals.User;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,20 +12,11 @@ import java.util.Locale;
 @Component
 public class MySqlDatabase {
 
-    @Value("${spring.datasource.oracleucp.port-number}")
-    private static String port;
-
-    @Value("${spring.datasource.oracleucp.database-name}")
-    private static String databaseName;
-
-    @Value("${spring.datasource.url}")
-    private static String host;
-
-    @Value("${spring.datasource.username}")
-    private static String userName;
-
-    @Value("${spring.datasource.password}")
-    private static String password;
+    private static String port = "14859";
+    private static String databaseName = "defaultdb";
+    private static String host = "mysql-8421f11-aleksey-af53.g.aivencloud.com:14859/defaultdb?sslmode=requireavnadminAVNS_RT3DRdiLVQwdYhqDD6s";
+    private static String userName = "avnadmin";
+    private static String password = "AVNS_RT3DRdiLVQwdYhqDD6s";
 
 
     public static void main(String[] args) throws ClassNotFoundException {

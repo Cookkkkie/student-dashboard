@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name = "users")
-public class User {
+public class UserMod {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,9 +34,9 @@ public class User {
     private String password;
 
 
-    public User() {}
+    public UserMod() {}
 
-    public User(String name, String last_name, String email, String password) {
+    public UserMod(String name, String last_name, String email, String password) {
         this.name = name;
         this.last_name = last_name;
         this.email = email;

@@ -23,8 +23,4 @@ public class DashboardController {
 		return "main";
 	}
 
-	@GetMapping("/login")
-	public String loginPage() {
-		return "login";
-	}
 }

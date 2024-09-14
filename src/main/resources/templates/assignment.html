@@ -12,7 +12,7 @@
     <nav id="sidebar">
         <ul class="components">
             <li><a href="#" th:href="@{/dashboard}">Dashboard</a></li>
-            <li><a href="#" th:href="@{/assignment}">Assignments</a></li>
+            <li><a href="#" th:href="@{/assignment/}">Assignments</a></li>
             <li><a href="#" th:href="@{/todo-list}">To-Do List</a></li>
             <li><a href="#" th:href="@{/courses}">Courses</a></li>
         </ul>
@@ -47,7 +47,7 @@
                         <td th:text="${assignment.name}"></td>
                         <td th:text="${assignment.dueDate}"></td>
                         <td>
-                            <form th:action="@{/delete/{id}(id=${assignment.assignmentID})}" method="post"
+                            <form th:action="@{/assignment/delete/{id}(id=${assignment.assignmentID})}" method="post"
                                   style="display:inline;">
                                 <!-- Use hidden _method input to specify DELETE method -->
                                 <input type="hidden" name="_method" value="delete"/>
