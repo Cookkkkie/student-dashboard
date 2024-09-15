@@ -33,8 +33,8 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponseDto<?>> updateUser(@Valid @RequestBody UserDetailsRequestDto userDetailsRequestDto, @PathVariable int id) throws UserNotFoundException, UserServiceLogicException {
-        return userService.updateUser(userDetailsRequestDto, id);
+    public ResponseEntity<ApiResponseDto<?>> updateUser(@Valid @RequestBody UserDetailsRequestDto userDetailsRequestDto, @PathVariable String email) throws UserNotFoundException, UserServiceLogicException {
+        return userService.updateUser(userDetailsRequestDto, email);
     }
 
     @DeleteMapping("/delete/{id}")

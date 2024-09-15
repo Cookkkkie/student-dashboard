@@ -18,7 +18,7 @@ public interface UserService {
     ResponseEntity<ApiResponseDto<?>> getAllUsers()
             throws UserServiceLogicException;
 
-    ResponseEntity<ApiResponseDto<?>> updateUser(@Valid UserDetailsRequestDto newUserDetails, int id)
+    ResponseEntity<ApiResponseDto<?>> updateUser(@Valid UserDetailsRequestDto newUserDetails, String email)
             throws UserNotFoundException, UserServiceLogicException;
 
     ResponseEntity<ApiResponseDto<?>> deleteUser(int id)

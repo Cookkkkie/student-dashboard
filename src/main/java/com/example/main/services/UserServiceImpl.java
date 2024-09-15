@@ -67,10 +67,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<ApiResponseDto<?>> updateUser(UserDetailsRequestDto newUserDetails, int id)
+    public ResponseEntity<ApiResponseDto<?>> updateUser(UserDetailsRequestDto newUserDetails, String email)
             throws UserNotFoundException, UserServiceLogicException {
         try {
-            UserMod user = userRepository.findById((long) id).orElseThrow(() -> new UserNotFoundException("User not found" + id));
+            UserMod user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found" + email));
 
 
             if (newUserDetails.getEmail() !=null && !newUserDetails.getEmail().isEmpty())  {
