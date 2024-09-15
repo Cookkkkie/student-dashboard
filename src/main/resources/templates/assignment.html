@@ -19,7 +19,12 @@
         <div class="sidebar-footer">
             <ul class="components">
                 <li><a href="#" th:href="@{/account}">View Account</a></li>
-                <li><a href="#" th:href="@{/logout}">Exit Account</a></li>
+                <li>
+                    <form action="/perform_logout" method="POST">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/> <!-- CSRF token for security -->
+                        <button type="submit" class="btn btn-link">Exit Account</button>
+                    </form>
+                </li>
             </ul>
         </div>
     </nav>

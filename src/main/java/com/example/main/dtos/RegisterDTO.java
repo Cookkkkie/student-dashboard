@@ -22,5 +22,7 @@ public class RegisterDTO {
     @NotEmpty
     private String password;
 
+    @NotEmpty
+    private String passwordConf;
 
 }

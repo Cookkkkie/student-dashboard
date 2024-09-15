@@ -16,15 +16,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
-
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -44,6 +42,8 @@ public class SecurityConfig {
                 )
                 .formLogin(form ->
                         form
+                                .loginPage("/login")
+                                .loginProcessingUrl("/perform_login")
                                 .defaultSuccessUrl("/main/dashboard", true)
                                 .failureUrl("/login?error=true")
                                 .usernameParameter("email")
@@ -52,12 +52,11 @@ public class SecurityConfig {
                 )
                 .logout(logout ->
                         logout
+
+                                .logoutUrl("/perform_logout")
                                 .logoutSuccessUrl("/login")
                                 .permitAll()
                 )
                 .build();
     }
-
 }
-
-

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Objects;
+
 @Controller
 @RequestMapping("/")
 public class AuthController {
@@ -33,26 +35,32 @@ public class AuthController {
 
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute RegisterDTO registerDTO, BindingResult bindingResult, Model model) {
+        model.addAttribute("incorrectPWD", false);
+
         if (bindingResult.hasErrors()) {
             return "register";
         }
 
         var bCryptEncoder = new BCryptPasswordEncoder();
+        if (Objects.equals(registerDTO.getPassword(),registerDTO.getPasswordConf())) {
 
-        UserMod user = new UserMod();
-        user.setEmail(registerDTO.getEmail());
-        user.setPassword(bCryptEncoder.encode(registerDTO.getPassword()));
-        user.setName(registerDTO.getName());
-        user.setLast_name(registerDTO.getLast_name());
+            UserMod user = new UserMod();
+            user.setEmail(registerDTO.getEmail());
+            user.setPassword(bCryptEncoder.encode(registerDTO.getPassword()));
+            user.setName(registerDTO.getName());
+            user.setLast_name(registerDTO.getLast_name());
 
-        userRepository.save(user);
-        model.addAttribute("registerDTO", new RegisterDTO());
-        model.addAttribute("success", true);
+            userRepository.save(user);
+            model.addAttribute("registerDTO", new RegisterDTO());
+            model.addAttribute("success", true);
+            return "redirect:/login";
 
-        return "redirect:/login";
+        }
+        else{
+            model.addAttribute("incorrectPWD", true);
+            return "register";
+        }
     }
-
-
 
 
     @GetMapping("/login")
