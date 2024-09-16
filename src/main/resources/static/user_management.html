@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <link rel="stylesheet" href="/adminstyles.css">
+</head>
+<body>
+<h1>User Management</h1>
+
+<!-- Create User Form -->
+<h2>Create User</h2>
+<form id="createUserForm">
+    <input type="text" id="createUserName" placeholder="Name" required>
+    <input type="email" id="createUserEmail" placeholder="Email" required>
+    <input type="password" id="createUserPassword" placeholder="Password" required>
+    <button type="submit">Create User</button>
+</form>
+
+<!-- Get User By ID Form -->
+<h2>Get User By ID</h2>
+<form id="getUserForm">
+    <input type="number" id="getUserId" placeholder="User ID" required>
+    <input type="password" id="getUserPassword" placeholder="Password" required>
+    <button type="submit">Get User</button>
+</form>
+
+<!-- Get All Users Form -->
+<h2>Get All Users</h2>
+<form id="getAllUsersForm">
+    <button type="submit">Get All Users</button>
+</form>
+
+<!-- Update User Form -->
+<h2>Update User</h2>
+<form id="updateUserForm">
+    <input type="email" id="updateUserEmail" placeholder="Email" required>
+    <input type="text" id="updateUserName" placeholder="New Name">
+    <input type="password" id="updateUserPassword" placeholder="New Password">
+    <button type="submit">Update User</button>
+</form>
+
+<!-- Delete User Form -->
+<h2>Delete User</h2>
+<form id="deleteUserForm">
+    <input type="email" id="deleteUserEmail" placeholder="Email" required>
+    <button type="submit">Delete User</button>
+</form>
+
+<div id="response"></div>
+
+<script>
+    const responseDiv = document.getElementById('response');
+
+    // Create User
+    document.getElementById('createUserForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const name = document.getElementById('createUserName').value;
+        const email = document.getElementById('createUserEmail').value;
+        const password = document.getElementById('createUserPassword').value;
+
+        try {
+            const response = await fetch('/api/users/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password }),
+            });
+            const result = await response.json();
+            responseDiv.textContent = `Create User Response: ${JSON.stringify(result)}`;
+        } catch (error) {
+            responseDiv.textContent = `Error: ${error.message}`;
+        }
+    });
+
+    // Get User By ID
+    document.getElementById('getUserForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const id = document.getElementById('getUserId').value;
+        const password = document.getElementById('getUserPassword').value;
+
+        try {
+            const response = await fetch(`/api/users/get/${id}?password=${password}`, {
+                method: 'GET',
+            });
+            const result = await response.json();
+            responseDiv.textContent = `Get User Response: ${JSON.stringify(result)}`;
+        } catch (error) {
+            responseDiv.textContent = `Error: ${error.message}`;
+        }
+    });
+
+    // Get All Users
+    document.getElementById('getAllUsersForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        try {
+            const response = await fetch('/api/users/get/all');
+            const result = await response.json();
+            responseDiv.textContent = `Get All Users Response: ${JSON.stringify(result)}`;
+        } catch (error) {
+            responseDiv.textContent = `Error: ${error.message}`;
+        }
+    });
+
+    // Update User
+    document.getElementById('updateUserForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const email = document.getElementById('updateUserEmail').value;
+        const name = document.getElementById('updateUserName').value;
+        const password = document.getElementById('updateUserPassword').value;
+
+        try {
+            const response = await fetch(`/api/users/update/${email}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, password }),
+            });
+            const result = await response.json();
+            responseDiv.textContent = `Update User Response: ${JSON.stringify(result)}`;
+        } catch (error) {
+            responseDiv.textContent = `Error: ${error.message}`;
+        }
+    });
+
+    // Delete User
+    document.getElementById('deleteUserForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const email = document.getElementById('deleteUserEmail').value;
+
+        try {
+            const response = await fetch(`/api/users/delete/${email}`, {
+                method: 'DELETE',
+            });
+            const result = await response.json();
+            responseDiv.textContent = `Delete User Response: ${JSON.stringify(result)}`;
+        } catch (error) {
+            responseDiv.textContent = `Error: ${error.message}`;
+        }
+    });
+</script>
+</body>
+</html>
