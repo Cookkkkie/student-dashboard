@@ -1,6 +1,7 @@
 package com.example.main.controller;
 
 import com.example.main.dtos.RegisterDTO;
+import com.example.main.dtos.UserStatus;
 import com.example.main.modals.UserMod;
 import com.example.main.repository.UserRepository;
 import jakarta.validation.Valid;
@@ -9,10 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
 
 import java.util.Objects;
 
@@ -49,6 +48,7 @@ public class AuthController {
             user.setPassword(bCryptEncoder.encode(registerDTO.getPassword()));
             user.setName(registerDTO.getName());
             user.setLast_name(registerDTO.getLast_name());
+            user.setAccountStatus(UserStatus.ACTIVE);
 
             userRepository.save(user);
             model.addAttribute("registerDTO", new RegisterDTO());

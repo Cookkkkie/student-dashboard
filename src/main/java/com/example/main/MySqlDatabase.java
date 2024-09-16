@@ -63,7 +63,7 @@ public class MySqlDatabase {
                 "last_name VARCHAR(100) NOT NULL," +
                 "email VARCHAR(255) NOT NULL UNIQUE," +
                 "password VARCHAR(255) NOT NULL," +
-                "role VARCHAR(50) NOT NULL" +//NEWLY ADDED
+                "accountStatus VARCHAR(255) NOT NULL" +
                 ");";
 
         String createCourse = "CREATE TABLE IF NOT EXISTS course (" +
