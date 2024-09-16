@@ -18,10 +18,12 @@ public interface UserService {
     ResponseEntity<ApiResponseDto<?>> getAllUsers()
             throws UserServiceLogicException;
 
-    ResponseEntity<ApiResponseDto<?>> updateUser(@Valid UserDetailsRequestDto newUserDetails, int id)
+    ResponseEntity<ApiResponseDto<?>> updateUser(@Valid UserDetailsRequestDto newUserDetails, String email)
             throws UserNotFoundException, UserServiceLogicException;
 
-    ResponseEntity<ApiResponseDto<?>> deleteUser(int id)
-            throws UserServiceLogicException, UserNotFoundException;
     ResponseEntity<ApiResponseDto<?>> getUserByID(int id, String password) throws UserNotFoundException, UserServiceLogicException;
+
+    ResponseEntity<ApiResponseDto<?>> softDeleteUser(String email) throws UserServiceLogicException, UserNotFoundException;
+    ResponseEntity<ApiResponseDto<?>> hardDeleteUser(String email) throws UserServiceLogicException, UserNotFoundException;
+
 }

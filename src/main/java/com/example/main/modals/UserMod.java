@@ -1,5 +1,6 @@
 package com.example.main.modals;
 
+import com.example.main.dtos.UserStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -32,6 +33,10 @@ public class UserMod {
     @NotBlank
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "accountStatus", nullable = false)
+    private UserStatus accountStatus;
 
 
     public UserMod() {}

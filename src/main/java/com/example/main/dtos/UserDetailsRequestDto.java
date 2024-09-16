@@ -22,4 +22,7 @@ public class UserDetailsRequestDto {
     @NotBlank(message = "Password is mandatory")
     private String password;
 
+    @NotBlank
+    private UserStatus accountStatus;
+
 }

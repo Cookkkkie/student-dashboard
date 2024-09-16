@@ -3,6 +3,7 @@ package com.example.main.services;
 import com.example.main.Exceptions.UserAlreadyExistsException;
 import com.example.main.Exceptions.UserNotFoundException;
 import com.example.main.Exceptions.UserServiceLogicException;
+import com.example.main.dtos.UserStatus;
 import com.example.main.modals.UserMod;
 import com.example.main.repository.UserRepository;
 import com.example.main.dtos.ApiResponseDto;
@@ -27,7 +28,7 @@ public class UserServiceImpl implements UserService{
     public ResponseEntity<ApiResponseDto<?>> createUser(UserDetailsRequestDto newUserDetails)
             throws UserAlreadyExistsException, UserServiceLogicException {
         try{
-            if(userRepository.findByEmail(newUserDetails.getEmail()) != null){
+            if(userRepository.findByEmail(newUserDetails.getEmail()).isPresent()){
                 throw new UserAlreadyExistsException("User already exists " + newUserDetails.getEmail());
             }
             UserMod newUser = new UserMod(
@@ -63,10 +64,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public ResponseEntity<ApiResponseDto<?>> updateUser(UserDetailsRequestDto newUserDetails, int id)
+    public ResponseEntity<ApiResponseDto<?>> updateUser(UserDetailsRequestDto newUserDetails, String email)
             throws UserNotFoundException, UserServiceLogicException {
         try {
-            UserMod user = userRepository.findById((long) id).orElseThrow(() -> new UserNotFoundException("User not found" + id));
+            UserMod user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found" + email));
 
 
             if (newUserDetails.getEmail() !=null && !newUserDetails.getEmail().isEmpty())  {
@@ -93,10 +94,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public ResponseEntity<ApiResponseDto<?>> deleteUser(int id)
+    public ResponseEntity<ApiResponseDto<?>> hardDeleteUser(String email)
             throws UserServiceLogicException, UserNotFoundException {
         try{
-            UserMod user = userRepository.findById((long) id).orElseThrow(() -> new UserNotFoundException("User not found"));
+            UserMod user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found"));
 
             userRepository.delete(user);
 
@@ -112,6 +113,7 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+
     @Override
     public ResponseEntity<ApiResponseDto<?>> getUserByID(int id, String password) {
         try {
@@ -125,4 +127,25 @@ public class UserServiceImpl implements UserService{
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public ResponseEntity<ApiResponseDto<?>> softDeleteUser(String email) throws UserServiceLogicException, UserNotFoundException {
+        try {
+            UserMod user = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+            user.setAccountStatus(UserStatus.INACTIVE);
+            userRepository.save(user);
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), "User soft-deleted successfully"));
+        } catch (UserNotFoundException e) {
+            throw new UserNotFoundException(e.getMessage());
+        } catch (Exception e) {
+            log.error("Failed to soft delete user: " + e.getMessage());
+            throw new UserServiceLogicException();
+        }
+    }
+
 }

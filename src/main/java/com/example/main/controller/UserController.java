@@ -32,14 +32,14 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponseDto<?>> updateUser(@Valid @RequestBody UserDetailsRequestDto userDetailsRequestDto, @PathVariable int id) throws UserNotFoundException, UserServiceLogicException {
-        return userService.updateUser(userDetailsRequestDto, id);
+    @PutMapping("/update/{email}")
+    public ResponseEntity<ApiResponseDto<?>> updateUser(@Valid @RequestBody UserDetailsRequestDto userDetailsRequestDto, @PathVariable String email) throws UserNotFoundException, UserServiceLogicException {
+        return userService.updateUser(userDetailsRequestDto, email);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ApiResponseDto<?>> deleteUser(@PathVariable String id) throws UserNotFoundException, UserServiceLogicException {
-        return userService.deleteUser(Integer.parseInt(id));
+    public ResponseEntity<ApiResponseDto<?>> deleteUser(@PathVariable String email) throws UserNotFoundException, UserServiceLogicException {
+        return userService.softDeleteUser(email);
     }
 
 }
