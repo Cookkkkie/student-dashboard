@@ -21,7 +21,7 @@ public class Course {
 
     @ManyToOne
     @JoinColumn(name = "userID", nullable = false)
-    private User user;
+    private UserMod user;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<Assignment> assignments;
