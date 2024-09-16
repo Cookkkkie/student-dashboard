@@ -1,7 +1,9 @@
 package com.example.main.dtos;
 
+import com.example.main.modals.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,7 +24,11 @@ public class UserDetailsRequestDto {
     @NotBlank(message = "Password is mandatory")
     private String password;
 
-    @NotBlank
+    //@NotBlank
+    @NotNull
     private UserStatus accountStatus;
+
+    @NotNull
+    private UserRole role;
 
 }

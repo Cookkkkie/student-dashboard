@@ -41,11 +41,20 @@ public class UserMod {
 
     public UserMod() {}
 
-    public UserMod(String name, String last_name, String email, String password) {
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    //private UserRole role;
+    private UserRole role = UserRole.USER;
+
+
+    public UserMod(String name, String last_name, String email, String password, UserStatus accountStatus, UserRole role) {
         this.name = name;
         this.last_name = last_name;
         this.email = email;
         this.password = password;
+        this.accountStatus = accountStatus;
+        this.role = role;
+        //this.role = (role != null) ? role : UserRole.USER;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.main.dtos;
 
+import com.example.main.modals.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -22,13 +23,15 @@ public class RegisterDTO {
     private String email;
 
     @NotEmpty
-    @Size(min = 6, message = "Minimum Password length is 6 characters")
+    //@Size(min = 6, message = "Minimum Password length is 6 characters")
     private String password;
 
     @NotEmpty
     private String passwordConf;
 
-    @NotEmpty
+    //@NotEmpty
     private UserStatus accountStatus;
+
+    private UserRole role;
 
 }

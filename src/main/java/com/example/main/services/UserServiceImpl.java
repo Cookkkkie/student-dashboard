@@ -32,7 +32,8 @@ public class UserServiceImpl implements UserService{
                 throw new UserAlreadyExistsException("User already exists " + newUserDetails.getEmail());
             }
             UserMod newUser = new UserMod(
-                    newUserDetails.getName(), newUserDetails.getLast_name(), newUserDetails.getEmail(), newUserDetails.getPassword(), newUserDetails.getRole()
+                    newUserDetails.getName(), newUserDetails.getLast_name(), newUserDetails.getEmail(),
+                    newUserDetails.getPassword(), newUserDetails.getAccountStatus(), newUserDetails.getRole()
             );
             userRepository.save(newUser);
 
