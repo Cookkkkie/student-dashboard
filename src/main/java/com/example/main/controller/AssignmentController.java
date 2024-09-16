@@ -39,13 +39,13 @@ public class AssignmentController {
     @DeleteMapping("/delete/{id}")
     public String deleteAssignment(@PathVariable("id") Long id) {
         assignmentService.deleteById(id);
-        return "redirect:/assignment";
+        return "redirect:/assignment/";
     }
 
     @PostMapping("/create")
     public String createAssignment(@ModelAttribute CreateAssignmentDto createAssignmentDto) {
         assignmentService.createAssignment(createAssignmentDto);
-        return "redirect:/assignment";
+        return "redirect:/assignment/";
     }
 
     @GetMapping("/create")

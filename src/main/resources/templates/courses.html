@@ -48,7 +48,7 @@
                         <td th:text="${course.courseID}"></td>
                         <td th:text="${course.name}"></td>
                         <td>
-                            <form th:action="@{/courses/delete/{id}(id=${course.courseID})}" method="post"
+                            <form th:action="@{/course/delete/{id}(id=${course.courseID})}" method="post"
                                   style="display:inline;">
                                 <!-- Use hidden _method input to specify DELETE method -->
                                 <input type="hidden" name="_method" value="delete"/>

@@ -37,7 +37,7 @@ public class UserController {
         return userService.updateUser(userDetailsRequestDto, email);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{email}")
     public ResponseEntity<ApiResponseDto<?>> deleteUser(@PathVariable String email) throws UserNotFoundException, UserServiceLogicException {
         return userService.softDeleteUser(email);
     }

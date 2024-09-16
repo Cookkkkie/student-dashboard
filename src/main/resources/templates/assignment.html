@@ -52,16 +52,14 @@
                         <td th:text="${assignment.name}"></td>
                         <td th:text="${assignment.dueDate}"></td>
                         <td>
-                            <form th:action="@{/delete/{id}(id=${assignment.assignmentID})}" method="post"
-                                  style="display:inline;">
-                                <!-- Use hidden _method input to specify DELETE method -->
+                            <form th:action="@{/assignment/delete/{id}(id=${assignment.assignmentID})}" method="post">
                                 <input type="hidden" name="_method" value="delete"/>
+                                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
                                 <button type="submit" class="btn btn-danger btn-sm"
                                         onclick="return confirm('Are you sure you want to delete this assignment?');">
                                     Delete
                                 </button>
                             </form>
-
                         </td>
                     </tr>
                     </tbody>

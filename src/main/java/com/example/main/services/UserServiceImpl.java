@@ -134,7 +134,7 @@ public class UserServiceImpl implements UserService{
             UserMod user = userRepository.findByEmail(email)
                     .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-            user.setAccountStatus(UserStatus.INACTIVE);
+//            user.setAccountStatus(UserStatus.INACTIVE);
             userRepository.save(user);
 
             return ResponseEntity
