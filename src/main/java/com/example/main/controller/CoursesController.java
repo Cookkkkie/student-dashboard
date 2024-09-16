@@ -33,7 +33,7 @@ public class CoursesController {
     }
 
     @DeleteMapping("courses/delete/{id}")
-    public String deleteCourse(@PathVariable("id") int id) {
+    public String deleteCourse(@PathVariable("id") long id) {
         service.deleteById(id);
         return "redirect:/courses";
     }

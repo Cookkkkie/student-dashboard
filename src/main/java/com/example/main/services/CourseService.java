@@ -39,9 +39,7 @@ public class CourseService {
                     .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "Error retrieving assignments"));
         }
     }
-    public void deleteById(int id) {
-        if (repo.existsById(id)) {
-            repo.deleteById(id);
-        }
+    public void deleteById(long id) {
+        repo.getCourseByCourseID(id);
     }
 }
