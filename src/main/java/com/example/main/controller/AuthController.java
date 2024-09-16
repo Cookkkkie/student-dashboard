@@ -48,7 +48,7 @@ public class AuthController {
             user.setPassword(bCryptEncoder.encode(registerDTO.getPassword()));
             user.setName(registerDTO.getName());
             user.setLast_name(registerDTO.getLast_name());
-//            user.setAccountStatus(UserStatus.ACTIVE);
+            user.setAccountStatus(UserStatus.ACTIVE);
 
             userRepository.save(user);
             model.addAttribute("registerDTO", new RegisterDTO());

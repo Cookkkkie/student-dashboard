@@ -34,9 +34,9 @@ public class UserMod {
     @Column(name = "password", nullable = false)
     private String password;
 
-//    @Enumerated(EnumType.STRING)
-//    @Column(name = "accountStatus", nullable = false)
-//    private UserStatus accountStatus;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "accountStatus", nullable = false)
+    private UserStatus accountStatus;
 
 
     public UserMod() {}

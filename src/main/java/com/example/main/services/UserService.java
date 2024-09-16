@@ -24,6 +24,5 @@ public interface UserService {
     ResponseEntity<ApiResponseDto<?>> getUserByID(int id, String password) throws UserNotFoundException, UserServiceLogicException;
 
     ResponseEntity<ApiResponseDto<?>> softDeleteUser(String email) throws UserServiceLogicException, UserNotFoundException;
-    ResponseEntity<ApiResponseDto<?>> hardDeleteUser(String email) throws UserServiceLogicException, UserNotFoundException;
 
 }

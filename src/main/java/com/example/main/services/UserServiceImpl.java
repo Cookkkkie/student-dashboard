@@ -93,26 +93,6 @@ public class UserServiceImpl implements UserService{
         }
     }
 
-    @Override
-    public ResponseEntity<ApiResponseDto<?>> hardDeleteUser(String email)
-            throws UserServiceLogicException, UserNotFoundException {
-        try{
-            UserMod user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found"));
-
-            userRepository.delete(user);
-
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), "User deleted successfully")
-                    );
-        }catch (UserNotFoundException e){
-            throw new UserNotFoundException(e.getMessage());
-        }catch (Exception e){
-            log.error("Failed to delete user: " + e.getMessage());
-            throw new UserServiceLogicException();
-        }
-    }
-
 
     @Override
     public ResponseEntity<ApiResponseDto<?>> getUserByID(int id, String password) {
@@ -134,7 +114,7 @@ public class UserServiceImpl implements UserService{
             UserMod user = userRepository.findByEmail(email)
                     .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-//            user.setAccountStatus(UserStatus.INACTIVE);
+            user.setAccountStatus(UserStatus.INACTIVE);
             userRepository.save(user);
 
             return ResponseEntity
