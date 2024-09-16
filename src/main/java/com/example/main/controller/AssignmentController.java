@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/assignment")
 public class AssignmentController {
 
     @Autowired
@@ -28,7 +28,7 @@ public class AssignmentController {
         return assignmentService.getAllAssignments();
     }
 
-    @GetMapping("/assignment")
+    @GetMapping("/")
     public String viewAssignments(Model model) {
         ApiResponseDto<?> responseDto = assignmentService.getAllAssignments().getBody();
         List<Assignment> assignments = (List<Assignment>) responseDto.getResponse();
@@ -42,13 +42,13 @@ public class AssignmentController {
         return "redirect:/assignment";
     }
 
-    @PostMapping("/assignment/create")
+    @PostMapping("/create")
     public String createAssignment(@ModelAttribute CreateAssignmentDto createAssignmentDto) {
         assignmentService.createAssignment(createAssignmentDto);
         return "redirect:/assignment";
     }
 
-    @GetMapping("/assignment/create")
+    @GetMapping("/create")
     public String createAssignmentForm(Model model, @ModelAttribute CreateAssignmentDto createAssignmentDto) {
         model.addAttribute("createAssignmentDto", createAssignmentDto);
         return "create";

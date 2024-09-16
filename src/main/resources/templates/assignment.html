@@ -11,15 +11,20 @@
 <div class="wrapper">
     <nav id="sidebar">
         <ul class="components">
-            <li><a href="#" th:href="@{/dashboard}">Dashboard</a></li>
-            <li><a href="#" th:href="@{/assignment}">Assignments</a></li>
+            <li><a href="#" th:href="@{/main/dashboard}">Dashboard</a></li>
+            <li><a href="#" th:href="@{/assignment/}">Assignments</a></li>
             <li><a href="#" th:href="@{/todo-list}">To-Do List</a></li>
-            <li><a href="#" th:href="@{/courses}">Courses</a></li>
+            <li><a href="#" th:href="@{/course/}">Courses</a></li>
         </ul>
         <div class="sidebar-footer">
             <ul class="components">
                 <li><a href="#" th:href="@{/account}">View Account</a></li>
-                <li><a href="#" th:href="@{/login}">Exit Account</a></li>
+                <li>
+                    <form action="/perform_logout" method="POST">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/> <!-- CSRF token for security -->
+                        <button type="submit" class="btn btn-link">Exit Account</button>
+                    </form>
+                </li>
             </ul>
         </div>
     </nav>

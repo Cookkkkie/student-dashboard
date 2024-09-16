@@ -10,9 +10,10 @@ import java.sql.SQLException;
 
 @SpringBootApplication
 @Controller
+@RequestMapping("/main")
 public class DashboardController {
 
-	@RequestMapping("/main")
+	@RequestMapping("/")
 	public static void main(String[] args) throws SQLException {
 		SpringApplication.run(DashboardController.class, args);
 		MySqlDatabase.createTables();
