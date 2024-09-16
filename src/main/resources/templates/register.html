@@ -58,6 +58,7 @@
           <div class="col">
             <label for="password" class="form-label">Password</label>
             <input th:field="${registerDTO.password}" type="password" id="password" name="password" class="form-control" required>
+            <p th:if="${#fields.hasErrors('password')}" th:errorclass="text-danger" th:errors="${registerDto.password}"></p>
           </div>
           <div class="col">
             <label for="passwordConf" class="form-label">Confirm Password</label>

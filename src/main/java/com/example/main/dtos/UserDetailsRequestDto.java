@@ -1,5 +1,6 @@
 package com.example.main.dtos;
 
+import com.example.main.modals.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -21,5 +22,15 @@ public class UserDetailsRequestDto {
 
     @NotBlank(message = "Password is mandatory")
     private String password;
+
+    private UserRole role;
+
+    public UserRole getRole() {
+        return UserRole.valueOf(role.toUpperCase());
+    }
+
+    private void setRole(UserRole role) {
+        this.role = UserRole.valueOf(role.name());
+    }
 
 }
