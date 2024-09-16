@@ -21,8 +21,13 @@ public class CoursesController {
     @GetMapping("/")
     public String viewCourses(Model model) {
         ApiResponseDto<?> responseDto = courseService.getAllCourses().getBody();
-        List<Course> courses = (List<Course>) responseDto.getResponse();
-        model.addAttribute("courses", courses);
+        if (responseDto != null && responseDto.getResponse() instanceof List) {
+            @SuppressWarnings("unchecked")
+            List<Course> courses = (List<Course>) responseDto.getResponse();
+            model.addAttribute("courses", courses);
+        } else {
+            model.addAttribute("courses", List.of());
+        }
         return "courses";
     }
 

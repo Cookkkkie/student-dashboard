@@ -17,7 +17,6 @@ public class CourseService {
     @Autowired
     private CourseRepository courseRepository;
 
-
     public void createCourse(CreateCourseDto createCourse){
         Course c = new Course();
         c.setName(createCourse.name);
@@ -25,14 +24,14 @@ public class CourseService {
     }
     public ResponseEntity<ApiResponseDto<?>> getAllCourses() {
         try {
-            List<Course> assignments = courseRepository.findAll();
+            List<Course> courses = courseRepository.findAll();
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), assignments));
+                    .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), courses));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "Error retrieving assignments"));
+                    .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "Error retrieving courses"));
         }
     }
     public void deleteById(Long id) {

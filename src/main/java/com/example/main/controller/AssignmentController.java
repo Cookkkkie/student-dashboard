@@ -31,8 +31,13 @@ public class AssignmentController {
     @GetMapping("/")
     public String viewAssignments(Model model) {
         ApiResponseDto<?> responseDto = assignmentService.getAllAssignments().getBody();
-        List<Assignment> assignments = (List<Assignment>) responseDto.getResponse();
-        model.addAttribute("assignments", assignments);
+        if (responseDto != null && responseDto.getResponse() instanceof List) {
+            @SuppressWarnings("unchecked")
+            List<Assignment> assignments = (List<Assignment>) responseDto.getResponse();
+            model.addAttribute("assignments", assignments);
+        } else {
+            model.addAttribute("assignments", List.of());
+        }
         return "assignment";
     }
 
