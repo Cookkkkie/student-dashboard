@@ -6,6 +6,7 @@ import com.example.main.Exceptions.UserNotFoundException;
 import com.example.main.Exceptions.UserServiceLogicException;
 import com.example.main.dtos.ApiResponseDto;
 import com.example.main.dtos.UserDetailsRequestDto;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +20,20 @@ public class UserController {
     @Autowired
     public UserService userService;
 
-    @PostMapping("/create")
+
+    @GetMapping("/create")
     public ResponseEntity<ApiResponseDto<?>> createUser(@Valid @RequestBody UserDetailsRequestDto userDetailsRequestDto) throws UserAlreadyExistsException, UserServiceLogicException {
         return userService.createUser(userDetailsRequestDto);
     }
-    @PostMapping("get/{id}")
-    public ResponseEntity<ApiResponseDto<?>> getAccountById(@PathVariable int id, @RequestParam String password) throws UserNotFoundException, UserServiceLogicException {
-        return userService.getUserByID(id, password);
+
+    @GetMapping("/giveAdmin/{email}")
+    public ResponseEntity<ApiResponseDto<?>> giveAdminRules(@PathVariable String email) throws UserNotFoundException, UserServiceLogicException {
+        return userService.createAdmin(email);
+    }
+
+    @GetMapping("/get/{email}")
+    public ResponseEntity<ApiResponseDto<?>> getAccountByEmail(@PathVariable String email) throws UserNotFoundException, UserServiceLogicException {
+        return userService.getUserByEmail(email);
     }
     @GetMapping("/get/all")
     public ResponseEntity<ApiResponseDto<?>> getAllUsers() throws  UserServiceLogicException {
@@ -37,9 +45,10 @@ public class UserController {
         return userService.updateUser(userDetailsRequestDto, email);
     }
 
-    @DeleteMapping("/delete/{email}")
-    public ResponseEntity<ApiResponseDto<?>> deleteUser(@PathVariable String email) throws UserNotFoundException, UserServiceLogicException {
+    @GetMapping("/delete/{email}")
+    public ResponseEntity<ApiResponseDto<?>> deleteUser(@PathVariable String email, HttpServletRequest request) throws UserNotFoundException, UserServiceLogicException {
         return userService.softDeleteUser(email);
     }
+
 
 }

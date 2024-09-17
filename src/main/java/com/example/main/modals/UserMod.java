@@ -1,5 +1,6 @@
 package com.example.main.modals;
 
+import com.example.main.dtos.UserRole;
 import com.example.main.dtos.UserStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -38,14 +39,24 @@ public class UserMod {
     @Column(name = "accountStatus", nullable = false)
     private UserStatus accountStatus;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private UserRole role = UserRole.USER;
+
+
+
 
     public UserMod() {}
 
-    public UserMod(String name, String last_name, String email, String password) {
+
+
+    public UserMod(String name, String last_name, String email, String password, UserStatus accountStatus, UserRole role) {
         this.name = name;
         this.last_name = last_name;
         this.email = email;
         this.password = password;
+        this.accountStatus = accountStatus;
+        this.role = role;
     }
 
 }
