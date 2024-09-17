@@ -92,17 +92,13 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<ApiResponseDto<?>> getUserByEmail(String email) {
         try {
             Optional<UserMod> user = userRepository.findByEmail(email);
-            if (user.isPresent()) {
-                return ResponseEntity
-                        .status(HttpStatus.OK)
-                        .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), user));
-            } else {
-                return ResponseEntity
-                        .status(HttpStatus.NOT_FOUND)
-                        .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "User not found"));
-            }
+            return user.<ResponseEntity<ApiResponseDto<?>>>map(userMod -> ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), userMod))).orElseGet(() -> ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "User not found")));
         } catch (Exception e) {
-            log.error("Failed to get user by email: " + e.getMessage());
+            log.error("Failed to get user by email: {}", e.getMessage());
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "Error fetching user"));
