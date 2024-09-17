@@ -28,12 +28,10 @@
     <button type="submit">Get User</button>
 </form>
 
-
 <h2>Get All Users</h2>
 <form id="getAllUsersForm">
     <button type="submit">Get All Users</button>
 </form>
-
 
 <h2>Delete User</h2>
 <form id="deleteUserForm">
@@ -43,9 +41,11 @@
 
 <div id="response"></div>
 
-</body>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        const token = localStorage.getItem('token');
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
         document.getElementById('createAdminForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const formData = new FormData(this);
@@ -53,6 +53,8 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                    'X-CSRF-Token': csrfToken
                 },
                 body: JSON.stringify(Object.fromEntries(formData))
             })
@@ -65,18 +67,25 @@
             e.preventDefault();
             const email = document.getElementById('getUserEmail').value;
             fetch(`/api/users/get/${email}`, {
-                method: 'GET',
+                method: 'POST', // Ensure method matches the controller method
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'X-CSRF-Token': csrfToken
+                }
             })
                 .then(response => response.json())
                 .then(data => document.getElementById('response').innerText = JSON.stringify(data))
                 .catch(error => console.error('Error:', error));
         });
 
-
         document.getElementById('getAllUsersForm').addEventListener('submit', function (e) {
             e.preventDefault();
             fetch('/api/users/get/all', {
                 method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'X-CSRF-Token': csrfToken
+                }
             })
                 .then(response => response.json())
                 .then(data => document.getElementById('response').innerText = JSON.stringify(data))
@@ -86,13 +95,21 @@
         document.getElementById('deleteUserForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const email = document.getElementById('deleteUserEmail').value;
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); // Get CSRF token from meta tag
+
             fetch(`/api/users/delete/${email}`, {
                 method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Ensure you have the correct JWT token here
+                    'X-CSRF-Token': csrfToken // Include CSRF token if needed
+                }
             })
                 .then(response => response.json())
                 .then(data => document.getElementById('response').innerText = JSON.stringify(data))
                 .catch(error => console.error('Error:', error));
         });
+
     });
 </script>
+</body>
 </html>

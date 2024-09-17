@@ -6,6 +6,7 @@ import com.example.main.Exceptions.UserNotFoundException;
 import com.example.main.Exceptions.UserServiceLogicException;
 import com.example.main.dtos.ApiResponseDto;
 import com.example.main.dtos.UserDetailsRequestDto;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class UserController {
         return userService.createAdmin(userDetailsRequestDto);
     }
 
-    @PostMapping("/get/{email}")
+    @GetMapping("/get/{email}")
     public ResponseEntity<ApiResponseDto<?>> getAccountByEmail(@PathVariable String email) throws UserNotFoundException, UserServiceLogicException {
         return userService.getUserByEmail(email);
     }
@@ -45,7 +46,12 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{email}")
-    public ResponseEntity<ApiResponseDto<?>> deleteUser(@PathVariable String email) throws UserNotFoundException, UserServiceLogicException {
+    public ResponseEntity<ApiResponseDto<?>> deleteUser(@PathVariable String email, HttpServletRequest request) throws UserNotFoundException, UserServiceLogicException {
+        System.out.println("Request Method: " + request.getMethod());
+        System.out.println("Request URI: " + request.getRequestURI());
+        System.out.println("Authorization Header: " + request.getHeader("Authorization"));
+        System.out.println("CSRF Token Header: " + request.getHeader("X-CSRF-Token"));
+
         return userService.softDeleteUser(email);
     }
 
