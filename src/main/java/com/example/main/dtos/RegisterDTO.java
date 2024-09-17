@@ -1,12 +1,9 @@
 package com.example.main.dtos;
 
-import com.example.main.modals.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.core.userdetails.User;
 
 @Getter
 @Setter

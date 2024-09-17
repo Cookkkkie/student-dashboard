@@ -1,5 +1,6 @@
 package com.example.main.modals;
 
+import com.example.main.dtos.UserRole;
 import com.example.main.dtos.UserStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

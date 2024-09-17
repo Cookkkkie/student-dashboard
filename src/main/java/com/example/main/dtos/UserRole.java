@@ -1,4 +1,4 @@
-package com.example.main.modals;
+package com.example.main.dtos;
 
 public enum UserRole {
     USER,

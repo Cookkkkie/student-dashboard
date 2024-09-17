@@ -1,6 +1,5 @@
 package com.example.main.dtos;
 
-import com.example.main.modals.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
