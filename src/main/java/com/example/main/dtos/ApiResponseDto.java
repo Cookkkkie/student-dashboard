@@ -1,14 +1,18 @@
 package com.example.main.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@AllArgsConstructor
+@Setter
+@Getter
 public class ApiResponseDto<T> {
     private String status;
-    @Getter
     private T response;
 
+    public ApiResponseDto() {}
+
+    public ApiResponseDto(String status, T response) {
+        this.status = status;
+        this.response = response;
+    }
 }

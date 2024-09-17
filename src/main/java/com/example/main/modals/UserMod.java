@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import java.util.List;
 
 @Setter
 @Getter
@@ -38,6 +39,8 @@ public class UserMod {
     @Column(name = "accountStatus", nullable = false)
     private UserStatus accountStatus;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> tasks;
 
     public UserMod() {}
 

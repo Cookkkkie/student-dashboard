@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Slf4j
@@ -125,6 +125,20 @@ public class UserServiceImpl implements UserService{
         } catch (Exception e) {
             log.error("Failed to soft delete user: " + e.getMessage());
             throw new UserServiceLogicException();
+        }
+    }
+
+    @Override
+    public ResponseEntity<ApiResponseDto<?>> getUserByEmail(String email) {
+        Optional<UserMod> user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), user.get()));
+        } else {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), null));
         }
     }
 
