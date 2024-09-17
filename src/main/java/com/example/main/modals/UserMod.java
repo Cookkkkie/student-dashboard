@@ -44,7 +44,6 @@ public class UserMod {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    //private UserRole role;
     private UserRole role = UserRole.USER;
 
 
@@ -55,7 +54,6 @@ public class UserMod {
         this.password = password;
         this.accountStatus = accountStatus;
         this.role = role;
-        //this.role = (role != null) ? role : UserRole.USER;
     }
 
 }

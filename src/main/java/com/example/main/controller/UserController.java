@@ -19,18 +19,20 @@ public class UserController {
     @Autowired
     public UserService userService;
 
-    @GetMapping("/")
-    public String showUserManagementPage() {
-        return "user_management";
-    }
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponseDto<?>> createUser(@Valid @RequestBody UserDetailsRequestDto userDetailsRequestDto) throws UserAlreadyExistsException, UserServiceLogicException {
         return userService.createUser(userDetailsRequestDto);
     }
-    @PostMapping("/get/{id}")
-    public ResponseEntity<ApiResponseDto<?>> getAccountById(@PathVariable int id, @RequestParam String password) throws UserNotFoundException, UserServiceLogicException {
-        return userService.getUserByID(id, password);
+
+    @PostMapping("/createAdmin")
+    public ResponseEntity<ApiResponseDto<?>> createAdmin(@Valid @RequestBody UserDetailsRequestDto userDetailsRequestDto) throws UserAlreadyExistsException, UserServiceLogicException {
+        return userService.createAdmin(userDetailsRequestDto);
+    }
+
+    @PostMapping("/get/{email}")
+    public ResponseEntity<ApiResponseDto<?>> getAccountByEmail(@PathVariable String email) throws UserNotFoundException, UserServiceLogicException {
+        return userService.getUserByEmail(email);
     }
     @GetMapping("/get/all")
     public ResponseEntity<ApiResponseDto<?>> getAllUsers() throws  UserServiceLogicException {

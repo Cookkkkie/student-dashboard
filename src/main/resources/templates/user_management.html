@@ -5,138 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Management</title>
     <link rel="stylesheet" href="/adminstyles.css">
+    <meta name="csrf-token" content="${_csrf.token}"> <!-- CSRF Token Meta Tag -->
 </head>
 <body>
 <h1>User Management</h1>
 
-<!-- Create User Form -->
-<h2>Create User</h2>
-<form id="createUserForm">
-    <input type="text" id="createUserName" placeholder="Name" required>
-    <input type="email" id="createUserEmail" placeholder="Email" required>
-    <input type="password" id="createUserPassword" placeholder="Password" required>
-    <button type="submit">Create User</button>
+<!-- Create Admin Form -->
+<h2>Create Admin</h2>
+<form id="createAdminForm">
+    <input type="text" name="name" id="createAdminName" placeholder="Name" required>
+    <input type="text" name="surname" id="createAdminSurname" placeholder="Surname" required>
+    <input type="email" name="email" id="createAdminEmail" placeholder="Email" required>
+    <input type="password" name="password" id="createAdminPassword" placeholder="Password" required>
+    <input type="hidden" name="status" value="ACTIVE">
+    <input type="hidden" name="role" value="ADMIN">
+    <button type="submit">Create Admin</button>
 </form>
 
-<!-- Get User By ID Form -->
-<h2>Get User By ID</h2>
+<h2>Get User By Email</h2>
 <form id="getUserForm">
-    <input type="number" id="getUserId" placeholder="User ID" required>
-    <input type="password" id="getUserPassword" placeholder="Password" required>
+    <input type="email" name="email" id="getUserEmail" placeholder="User Email" required>
     <button type="submit">Get User</button>
 </form>
 
-<!-- Get All Users Form -->
+
 <h2>Get All Users</h2>
 <form id="getAllUsersForm">
     <button type="submit">Get All Users</button>
 </form>
 
-<!-- Update User Form -->
-<h2>Update User</h2>
-<form id="updateUserForm">
-    <input type="email" id="updateUserEmail" placeholder="Email" required>
-    <input type="text" id="updateUserName" placeholder="New Name">
-    <input type="password" id="updateUserPassword" placeholder="New Password">
-    <button type="submit">Update User</button>
-</form>
 
-<!-- Delete User Form -->
 <h2>Delete User</h2>
 <form id="deleteUserForm">
-    <input type="email" id="deleteUserEmail" placeholder="Email" required>
+    <input type="email" name="email" id="deleteUserEmail" placeholder="Email" required>
     <button type="submit">Delete User</button>
 </form>
 
 <div id="response"></div>
 
+</body>
 <script>
-    const responseDiv = document.getElementById('response');
-
-    // Create User
-    document.getElementById('createUserForm').addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const name = document.getElementById('createUserName').value;
-        const email = document.getElementById('createUserEmail').value;
-        const password = document.getElementById('createUserPassword').value;
-
-        try {
-            const response = await fetch('/api/users/create', {
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('createAdminForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            fetch('/api/users/createAdmin', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, password }),
-            });
-            const result = await response.json();
-            responseDiv.textContent = `Create User Response: ${JSON.stringify(result)}`;
-        } catch (error) {
-            responseDiv.textContent = `Error: ${error.message}`;
-        }
-    });
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(Object.fromEntries(formData))
+            })
+                .then(response => response.json())
+                .then(data => document.getElementById('response').innerText = JSON.stringify(data))
+                .catch(error => console.error('Error:', error));
+        });
 
-    // Get User By ID
-    document.getElementById('getUserForm').addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const id = document.getElementById('getUserId').value;
-        const password = document.getElementById('getUserPassword').value;
-
-        try {
-            const response = await fetch(`/api/users/get/${id}?password=${password}`, {
+        document.getElementById('getUserForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('getUserEmail').value;
+            fetch(`/api/users/get/${email}`, {
                 method: 'GET',
-            });
-            const result = await response.json();
-            responseDiv.textContent = `Get User Response: ${JSON.stringify(result)}`;
-        } catch (error) {
-            responseDiv.textContent = `Error: ${error.message}`;
-        }
-    });
+            })
+                .then(response => response.json())
+                .then(data => document.getElementById('response').innerText = JSON.stringify(data))
+                .catch(error => console.error('Error:', error));
+        });
 
-    // Get All Users
-    document.getElementById('getAllUsersForm').addEventListener('submit', async (event) => {
-        event.preventDefault();
-        try {
-            const response = await fetch('/api/users/get/all');
-            const result = await response.json();
-            responseDiv.textContent = `Get All Users Response: ${JSON.stringify(result)}`;
-        } catch (error) {
-            responseDiv.textContent = `Error: ${error.message}`;
-        }
-    });
 
-    // Update User
-    document.getElementById('updateUserForm').addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const email = document.getElementById('updateUserEmail').value;
-        const name = document.getElementById('updateUserName').value;
-        const password = document.getElementById('updateUserPassword').value;
+        document.getElementById('getAllUsersForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            fetch('/api/users/get/all', {
+                method: 'GET',
+            })
+                .then(response => response.json())
+                .then(data => document.getElementById('response').innerText = JSON.stringify(data))
+                .catch(error => console.error('Error:', error));
+        });
 
-        try {
-            const response = await fetch(`/api/users/update/${email}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, password }),
-            });
-            const result = await response.json();
-            responseDiv.textContent = `Update User Response: ${JSON.stringify(result)}`;
-        } catch (error) {
-            responseDiv.textContent = `Error: ${error.message}`;
-        }
-    });
-
-    // Delete User
-    document.getElementById('deleteUserForm').addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const email = document.getElementById('deleteUserEmail').value;
-
-        try {
-            const response = await fetch(`/api/users/delete/${email}`, {
+        document.getElementById('deleteUserForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('deleteUserEmail').value;
+            fetch(`/api/users/delete/${email}`, {
                 method: 'DELETE',
-            });
-            const result = await response.json();
-            responseDiv.textContent = `Delete User Response: ${JSON.stringify(result)}`;
-        } catch (error) {
-            responseDiv.textContent = `Error: ${error.message}`;
-        }
+            })
+                .then(response => response.json())
+                .then(data => document.getElementById('response').innerText = JSON.stringify(data))
+                .catch(error => console.error('Error:', error));
+        });
     });
 </script>
-</body>
 </html>

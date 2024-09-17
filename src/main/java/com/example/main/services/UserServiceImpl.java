@@ -3,12 +3,9 @@ package com.example.main.services;
 import com.example.main.Exceptions.UserAlreadyExistsException;
 import com.example.main.Exceptions.UserNotFoundException;
 import com.example.main.Exceptions.UserServiceLogicException;
-import com.example.main.dtos.UserStatus;
+import com.example.main.dtos.*;
 import com.example.main.modals.UserMod;
 import com.example.main.repository.UserRepository;
-import com.example.main.dtos.ApiResponseDto;
-import com.example.main.dtos.ApiResponseStatus;
-import com.example.main.dtos.UserDetailsRequestDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,10 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Slf4j
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -27,8 +25,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public ResponseEntity<ApiResponseDto<?>> createUser(UserDetailsRequestDto newUserDetails)
             throws UserAlreadyExistsException, UserServiceLogicException {
-        try{
-            if(userRepository.findByEmail(newUserDetails.getEmail()).isPresent()){
+        try {
+            if (userRepository.findByEmail(newUserDetails.getEmail()).isPresent()) {
                 throw new UserAlreadyExistsException("User already exists " + newUserDetails.getEmail());
             }
             UserMod newUser = new UserMod(
@@ -40,72 +38,74 @@ public class UserServiceImpl implements UserService{
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), "User created successfully"));
-        }catch (UserAlreadyExistsException e){
+        } catch (UserAlreadyExistsException e) {
             throw new UserAlreadyExistsException(e.getMessage());
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("Failed to create new user account: " + e.getMessage());
             throw new UserServiceLogicException();
         }
     }
 
     @Override
-    public ResponseEntity<ApiResponseDto<?>> getAllUsers()
-            throws UserServiceLogicException {
-        try{
+    public ResponseEntity<ApiResponseDto<?>> getAllUsers() throws UserServiceLogicException {
+        try {
             List<UserMod> users = userRepository.findAllByOrderByUserID();
-
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), users)
-                    );
-        }catch (Exception e){
-            log.error("Failed to get all users: " + e.getMessage());
+                    .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), users));
+        } catch (Exception e) {
+            log.error("Failed to get all users: " + e.getMessage(), e);
             throw new UserServiceLogicException();
         }
     }
+
 
     @Override
     public ResponseEntity<ApiResponseDto<?>> updateUser(UserDetailsRequestDto newUserDetails, String email)
             throws UserNotFoundException, UserServiceLogicException {
         try {
-            UserMod user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found" + email));
+            UserMod user = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new UserNotFoundException("User not found " + email));
 
-
-            if (newUserDetails.getEmail() !=null && !newUserDetails.getEmail().isEmpty())  {
+            if (newUserDetails.getEmail() != null && !newUserDetails.getEmail().isEmpty()) {
                 user.setEmail(newUserDetails.getEmail());
             }
 
-            if (newUserDetails.getPassword() !=null && !newUserDetails.getPassword().isEmpty() ) {
+            if (newUserDetails.getPassword() != null && !newUserDetails.getPassword().isEmpty()) {
                 user.setPassword(newUserDetails.getPassword());
             }
-
 
             userRepository.save(user);
 
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), "User updated successfully")
-                    );
-        }catch (UserNotFoundException e){
+                    .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), "User updated successfully"));
+        } catch (UserNotFoundException e) {
             throw new UserNotFoundException(e.getMessage());
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("Failed to update user: " + e.getMessage());
             throw new UserServiceLogicException();
         }
     }
 
-
     @Override
-    public ResponseEntity<ApiResponseDto<?>> getUserByID(int id, String password) {
+    public ResponseEntity<ApiResponseDto<?>> getUserByEmail(String email) {
         try {
-            UserMod user = userRepository.findById((long)id).orElseThrow(() -> new UserNotFoundException("Not found"));
-            if(user.getPassword().equals(password)){
-                return ResponseEntity.status(HttpStatus.OK).body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), user));
-            }else{
-                throw new UserNotFoundException("Wrong password");
+            Optional<UserMod> user = userRepository.findByEmail(email);
+            if (user.isPresent()) {
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), user));
+            } else {
+                return ResponseEntity
+                        .status(HttpStatus.NOT_FOUND)
+                        .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "User not found"));
             }
-        } catch (UserNotFoundException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            log.error("Failed to get user by email: " + e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "Error fetching user"));
         }
     }
 
@@ -129,4 +129,29 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    @Override
+    public ResponseEntity<ApiResponseDto<?>> createAdmin(UserDetailsRequestDto adminDetailsRequestDto) {
+        try {
+            if (userRepository.findByEmail(adminDetailsRequestDto.getEmail()).isPresent()) {
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "Admin already exists"));
+            }
+
+            UserMod newAdmin = new UserMod(
+                    adminDetailsRequestDto.getName(), adminDetailsRequestDto.getLast_name(), adminDetailsRequestDto.getEmail(),
+                    adminDetailsRequestDto.getPassword(), UserStatus.ACTIVE, UserRole.ADMIN
+            );
+            userRepository.save(newAdmin);
+
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), "Admin created successfully"));
+        } catch (Exception e) {
+            log.error("Failed to create admin: " + e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "Error creating admin"));
+        }
+    }
 }
