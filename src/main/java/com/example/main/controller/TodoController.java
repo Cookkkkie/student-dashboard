@@ -1,5 +1,7 @@
 package com.example.main.controller;
 
+import com.example.main.Exceptions.UserNotFoundException;
+import com.example.main.Exceptions.UserServiceLogicException;
 import com.example.main.dtos.ApiResponseDto;
 import com.example.main.modals.Task;
 import com.example.main.modals.UserMod;
@@ -25,7 +27,7 @@ public class TodoController {
     private UserService userService;
 
     @GetMapping("/")
-    public String viewTodoList(Model model) {
+    public String viewTodoList(Model model) throws UserNotFoundException, UserServiceLogicException {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
@@ -45,8 +47,9 @@ public class TodoController {
     }
 
 
+
     @PostMapping("/create")
-    public String createTask(@ModelAttribute Task task) {
+    public String createTask(@ModelAttribute Task task) throws UserNotFoundException, UserServiceLogicException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
 

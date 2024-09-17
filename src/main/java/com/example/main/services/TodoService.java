@@ -18,7 +18,7 @@ public class TodoService {
 
     public ResponseEntity<ApiResponseDto<List<Task>>> getTasksByUserId(Long userId) {
         try {
-            List<Task> tasks = taskRepository.findByUserUserID(userId);
+            List<Task> tasks = taskRepository.findByUserUserID(userId);  // Assuming this method is correct
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), tasks));
