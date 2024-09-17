@@ -25,5 +25,5 @@ public interface UserService {
 
     ResponseEntity<ApiResponseDto<?>> softDeleteUser(String email) throws UserServiceLogicException, UserNotFoundException;
 
-    ResponseEntity<ApiResponseDto<?>> createAdmin(@Valid UserDetailsRequestDto userDetailsRequestDto);
+    ResponseEntity<ApiResponseDto<?>> createAdmin(String email);
 }

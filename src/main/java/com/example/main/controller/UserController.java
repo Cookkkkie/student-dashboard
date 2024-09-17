@@ -21,14 +21,14 @@ public class UserController {
     public UserService userService;
 
 
-    @PostMapping("/create")
+    @GetMapping("/create")
     public ResponseEntity<ApiResponseDto<?>> createUser(@Valid @RequestBody UserDetailsRequestDto userDetailsRequestDto) throws UserAlreadyExistsException, UserServiceLogicException {
         return userService.createUser(userDetailsRequestDto);
     }
 
-    @PostMapping("/createAdmin")
-    public ResponseEntity<ApiResponseDto<?>> createAdmin(@Valid @RequestBody UserDetailsRequestDto userDetailsRequestDto) throws UserAlreadyExistsException, UserServiceLogicException {
-        return userService.createAdmin(userDetailsRequestDto);
+    @GetMapping("/giveAdmin/{email}")
+    public ResponseEntity<ApiResponseDto<?>> giveAdminRules(@PathVariable String email) throws UserNotFoundException, UserServiceLogicException {
+        return userService.createAdmin(email);
     }
 
     @GetMapping("/get/{email}")
@@ -45,14 +45,10 @@ public class UserController {
         return userService.updateUser(userDetailsRequestDto, email);
     }
 
-    @DeleteMapping("/delete/{email}")
+    @GetMapping("/delete/{email}")
     public ResponseEntity<ApiResponseDto<?>> deleteUser(@PathVariable String email, HttpServletRequest request) throws UserNotFoundException, UserServiceLogicException {
-        System.out.println("Request Method: " + request.getMethod());
-        System.out.println("Request URI: " + request.getRequestURI());
-        System.out.println("Authorization Header: " + request.getHeader("Authorization"));
-        System.out.println("CSRF Token Header: " + request.getHeader("X-CSRF-Token"));
-
         return userService.softDeleteUser(email);
     }
+
 
 }

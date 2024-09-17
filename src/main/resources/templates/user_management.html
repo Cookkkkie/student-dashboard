@@ -5,34 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Management</title>
     <link rel="stylesheet" href="/adminstyles.css">
-    <meta name="csrf-token" content="${_csrf.token}"> <!-- CSRF Token Meta Tag -->
+    <meta name="csrf-token" content="${_csrf.token}">
 </head>
 <body>
 <h1>User Management</h1>
 
-<!-- Create Admin Form -->
-<h2>Create Admin</h2>
-<form id="createAdminForm">
-    <input type="text" name="name" id="createAdminName" placeholder="Name" required>
-    <input type="text" name="surname" id="createAdminSurname" placeholder="Surname" required>
+<!-- Give Admin Privileges -->
+<h2>Give Admin Privileges</h2>
+<form id="giveAdminForm">
     <input type="email" name="email" id="createAdminEmail" placeholder="Email" required>
-    <input type="password" name="password" id="createAdminPassword" placeholder="Password" required>
-    <input type="hidden" name="status" value="ACTIVE">
-    <input type="hidden" name="role" value="ADMIN">
-    <button type="submit">Create Admin</button>
+    <button type="submit">Give Admin</button>
 </form>
 
+<!-- Get User By Email -->
 <h2>Get User By Email</h2>
 <form id="getUserForm">
     <input type="email" name="email" id="getUserEmail" placeholder="User Email" required>
     <button type="submit">Get User</button>
 </form>
 
+<!-- Get All Users -->
 <h2>Get All Users</h2>
 <form id="getAllUsersForm">
     <button type="submit">Get All Users</button>
 </form>
 
+<!-- Delete User -->
 <h2>Delete User</h2>
 <form id="deleteUserForm">
     <input type="email" name="email" id="deleteUserEmail" placeholder="Email" required>
@@ -43,33 +41,33 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const token = localStorage.getItem('token');
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-        document.getElementById('createAdminForm').addEventListener('submit', function (e) {
+        // Give Admin Privileges
+        document.getElementById('giveAdminForm').addEventListener('submit', function (e) {
             e.preventDefault();
-            const formData = new FormData(this);
-            fetch('/api/users/createAdmin', {
-                method: 'POST',
+            const email = document.getElementById('createAdminEmail').value;
+
+            fetch(`/api/users/giveAdmin/${email}`, {
+                method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
                     'X-CSRF-Token': csrfToken
-                },
-                body: JSON.stringify(Object.fromEntries(formData))
+                }
             })
                 .then(response => response.json())
                 .then(data => document.getElementById('response').innerText = JSON.stringify(data))
                 .catch(error => console.error('Error:', error));
         });
 
+        // Get User By Email
         document.getElementById('getUserForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const email = document.getElementById('getUserEmail').value;
+
             fetch(`/api/users/get/${email}`, {
-                method: 'POST', // Ensure method matches the controller method
+                method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'X-CSRF-Token': csrfToken
                 }
             })
@@ -78,12 +76,13 @@
                 .catch(error => console.error('Error:', error));
         });
 
+        // Get All Users
         document.getElementById('getAllUsersForm').addEventListener('submit', function (e) {
             e.preventDefault();
+
             fetch('/api/users/get/all', {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
                     'X-CSRF-Token': csrfToken
                 }
             })
@@ -92,23 +91,21 @@
                 .catch(error => console.error('Error:', error));
         });
 
+        // Delete User
         document.getElementById('deleteUserForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const email = document.getElementById('deleteUserEmail').value;
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); // Get CSRF token from meta tag
 
             fetch(`/api/users/delete/${email}`, {
-                method: 'DELETE',
+                method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${token}`, // Ensure you have the correct JWT token here
-                    'X-CSRF-Token': csrfToken // Include CSRF token if needed
+                    'X-CSRF-Token': csrfToken
                 }
             })
                 .then(response => response.json())
                 .then(data => document.getElementById('response').innerText = JSON.stringify(data))
                 .catch(error => console.error('Error:', error));
         });
-
     });
 </script>
 </body>

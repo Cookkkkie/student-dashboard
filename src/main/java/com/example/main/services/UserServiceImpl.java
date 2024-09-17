@@ -121,32 +121,35 @@ public class UserServiceImpl implements UserService {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), "User soft-deleted successfully"));
+
         } catch (UserNotFoundException e) {
-            throw new UserNotFoundException(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "User not found"));
         } catch (Exception e) {
-            log.error("Failed to soft delete user: " + e.getMessage());
             throw new UserServiceLogicException();
         }
     }
 
     @Override
-    public ResponseEntity<ApiResponseDto<?>> createAdmin(UserDetailsRequestDto adminDetailsRequestDto) {
+    public ResponseEntity<ApiResponseDto<?>> createAdmin(String email) {
         try {
-            if (userRepository.findByEmail(adminDetailsRequestDto.getEmail()).isPresent()) {
+            if (userRepository.findByEmail(email).get().getRole() == UserRole.ADMIN) {
                 return ResponseEntity
-                        .status(HttpStatus.BAD_REQUEST)
-                        .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "Admin already exists"));
+                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "Already have admin rules"));
             }
+            Optional<UserMod> user = userRepository.findByEmail(email);
+            if(user.isPresent()) {
+                UserMod u = user.get();
+                u.setRole(UserRole.ADMIN);
+                userRepository.save(u);
+                return ResponseEntity
+                        .status(HttpStatus.CREATED)
+                        .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), "Admin created successfully"));
 
-            UserMod newAdmin = new UserMod(
-                    adminDetailsRequestDto.getName(), adminDetailsRequestDto.getLast_name(), adminDetailsRequestDto.getEmail(),
-                    adminDetailsRequestDto.getPassword(), UserStatus.ACTIVE, UserRole.ADMIN
-            );
-            userRepository.save(newAdmin);
-
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), "Admin created successfully"));
+            }
+                return ResponseEntity
+                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "Admin not implemented"));
         } catch (Exception e) {
             log.error("Failed to create admin: " + e.getMessage());
             return ResponseEntity

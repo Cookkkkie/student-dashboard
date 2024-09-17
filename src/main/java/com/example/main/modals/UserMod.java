@@ -39,12 +39,15 @@ public class UserMod {
     @Column(name = "accountStatus", nullable = false)
     private UserStatus accountStatus;
 
-
-    public UserMod() {}
-
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private UserRole role = UserRole.USER;
+
+
+
+
+    public UserMod() {}
+
 
 
     public UserMod(String name, String last_name, String email, String password, UserStatus accountStatus, UserRole role) {
