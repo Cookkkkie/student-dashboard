@@ -19,18 +19,11 @@ public class Course {
     @Column(name = "name", nullable = false)
     private String name;
 
-    /**
-     * @Note
-     * No idea why, but UserMod and Assignments broke the repository. I'm kinda impressed xddd
-     * TODO
-     * fix this
-     */
+    @ManyToOne
+    @JoinColumn(name = "userID", nullable = false)
+    private UserMod user;
 
-    //@ManyToOne
-   // @JoinColumn(name = "userID", nullable = false)
-    //private UserMod user;
-
-   // @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    //private List<Assignment> assignments;
+   @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    private List<Assignment> assignments;
 
 }

@@ -4,6 +4,7 @@ import com.example.main.dtos.RegisterDTO;
 import com.example.main.dtos.UserStatus;
 import com.example.main.modals.UserMod;
 import com.example.main.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,7 +34,8 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public String register(@Valid @ModelAttribute RegisterDTO registerDTO, BindingResult bindingResult, Model model) {
+    public String register(@Valid @ModelAttribute RegisterDTO registerDTO, BindingResult bindingResult, Model model, HttpSession session) {
+
         model.addAttribute("incorrectPWD", false);
 
         if (bindingResult.hasErrors()) {
