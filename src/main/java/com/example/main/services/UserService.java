@@ -5,7 +5,6 @@ import com.example.main.Exceptions.UserNotFoundException;
 import com.example.main.Exceptions.UserServiceLogicException;
 import com.example.main.dtos.ApiResponseDto;
 import com.example.main.dtos.UserDetailsRequestDto;
-import com.example.main.modals.UserMod;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,9 +21,9 @@ public interface UserService {
     ResponseEntity<ApiResponseDto<?>> updateUser(@Valid UserDetailsRequestDto newUserDetails, String email)
             throws UserNotFoundException, UserServiceLogicException;
 
-    ResponseEntity<ApiResponseDto<?>> getUserByID(int id, String password) throws UserNotFoundException, UserServiceLogicException;
+    ResponseEntity<ApiResponseDto<?>> getUserByEmail(String email) throws UserNotFoundException, UserServiceLogicException;
 
     ResponseEntity<ApiResponseDto<?>> softDeleteUser(String email) throws UserServiceLogicException, UserNotFoundException;
 
-    ResponseEntity<ApiResponseDto<?>> getUserByEmail(String email);
+    ResponseEntity<ApiResponseDto<?>> createAdmin(String email);
 }

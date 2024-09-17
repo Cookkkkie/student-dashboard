@@ -4,7 +4,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.security.core.userdetails.User;
 
 @Getter
 @Setter
@@ -21,12 +20,15 @@ public class RegisterDTO {
     private String email;
 
     @NotEmpty
+    //@Size(min = 6, message = "Minimum Password length is 6 characters")
     private String password;
 
     @NotEmpty
     private String passwordConf;
 
-    @NotEmpty
+    //@NotEmpty
     private UserStatus accountStatus;
+
+    private UserRole role;
 
 }
