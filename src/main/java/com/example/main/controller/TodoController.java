@@ -30,13 +30,9 @@ public class TodoController {
     public String viewTodoList(Model model) throws UserNotFoundException, UserServiceLogicException {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
+        String userID = auth.getName();
 
-        ApiResponseDto<?> userResponse = userService.getUserByEmail(email).getBody();
-        assert userResponse != null;
-        UserMod user = (UserMod) userResponse.getResponse();
-
-        ApiResponseDto<?> tasksResponse = todoService.getTasksByUserId((long) user.getUserID()).getBody();
+        ApiResponseDto<?> tasksResponse = todoService.getTasksByUserId(Long.valueOf(userID)).getBody();
         assert tasksResponse != null;
 
         List<Task> tasks = (List<Task>) tasksResponse.getResponse();
