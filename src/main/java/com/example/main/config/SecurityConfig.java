@@ -1,5 +1,6 @@
 package com.example.main.config;
 
+import com.example.main.handlers.CustomAuthenticationSuccessHandler;
 import com.example.main.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -31,6 +33,10 @@ public class SecurityConfig {
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
+    @Bean
+    public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+        return new CustomAuthenticationSuccessHandler();
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -45,7 +51,7 @@ public class SecurityConfig {
                         form
                                 .loginPage("/login")
                                 .loginProcessingUrl("/perform_login")
-                                .defaultSuccessUrl("/main/dashboard", true)
+                                .successHandler(customAuthenticationSuccessHandler())
                                 .failureUrl("/login?error=true")
                                 .usernameParameter("email")
                                 .passwordParameter("password")
@@ -53,7 +59,6 @@ public class SecurityConfig {
                 )
                 .logout(logout ->
                         logout
-
                                 .logoutUrl("/perform_logout")
                                 .logoutSuccessUrl("/login")
                                 .permitAll()

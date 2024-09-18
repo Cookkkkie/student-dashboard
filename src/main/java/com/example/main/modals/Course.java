@@ -26,11 +26,11 @@ public class Course {
      * fix this
      */
 
-    //@ManyToOne
-   // @JoinColumn(name = "userID", nullable = false)
-    //private UserMod user;
+    @ManyToOne
+    @JoinColumn(name = "userID", nullable = false)
+    private UserMod user;
 
-   // @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
-    //private List<Assignment> assignments;
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    private List<Assignment> assignments;
 
 }

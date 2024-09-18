@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<UserMod, Long> {
     Optional<UserMod> findByEmail(String email);
     List<UserMod> findAllByOrderByUserID();
+    Optional<UserMod> findByUserID(long userID);
 
 }

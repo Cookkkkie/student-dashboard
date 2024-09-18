@@ -21,18 +21,27 @@ public class AssignmentService {
 
     @Autowired
     private AssignmentRepository assignmentRepository;
+
     @Autowired
     private CourseRepository courseRepository;
 
-    public void createAssignment(CreateAssignmentDto createAssignmentDto){
+    @Autowired
+    private UserService userService;
+
+    public void createAssignment(CreateAssignmentDto createAssignmentDto) {
         Course course = courseRepository.getCourseByCourseID(createAssignmentDto.getCourseID());
-        Assignment assignment = new Assignment(createAssignmentDto.assignmentName, createAssignmentDto.assignmentDate, createAssignmentDto.assignmentStatus, course);
+        Assignment assignment = new Assignment(
+                createAssignmentDto.assignmentName,
+                createAssignmentDto.assignmentDate,
+                createAssignmentDto.assignmentStatus,
+                course
+        );
         assignmentRepository.save(assignment);
     }
 
-    public ResponseEntity<ApiResponseDto<?>> getAllAssignments() {
+    public ResponseEntity<ApiResponseDto<?>> getAssignmentsByUserId(Long userId) {
         try {
-            List<Assignment> assignments = assignmentRepository.findAll();
+            List<Assignment> assignments = assignmentRepository.findByCourse_UserUserID(userId);
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), assignments));
@@ -42,7 +51,6 @@ public class AssignmentService {
                     .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "Error retrieving assignments"));
         }
     }
-
 
     public void deleteById(Long id) {
         if (assignmentRepository.existsById(id)) {

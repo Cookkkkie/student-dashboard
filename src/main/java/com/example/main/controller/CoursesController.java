@@ -4,6 +4,7 @@ import com.example.main.dtos.ApiResponseDto;
 import com.example.main.dtos.CreateCourseDto;
 import com.example.main.modals.Course;
 import com.example.main.services.CourseService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,8 +20,9 @@ public class CoursesController {
 
 
     @GetMapping("/")
-    public String viewCourses(Model model) {
-        ApiResponseDto<?> responseDto = courseService.getAllCourses().getBody();
+    public String viewCourses(Model model, HttpSession session) {
+//        System.out.println(session.getAttribute("userID").toString());
+        ApiResponseDto<?> responseDto = courseService.getAllCourses(Long.parseLong(session.getAttribute("userID").toString())).getBody();
         if (responseDto != null && responseDto.getResponse() instanceof List) {
             @SuppressWarnings("unchecked")
             List<Course> courses = (List<Course>) responseDto.getResponse();
@@ -38,8 +40,8 @@ public class CoursesController {
     }
 
     @PostMapping("/create")
-    public String createCourse(@ModelAttribute CreateCourseDto createCourseDto) {
-        courseService.createCourse(createCourseDto);
+    public String createCourse(@ModelAttribute CreateCourseDto createCourseDto, HttpSession session) {
+        courseService.createCourse(createCourseDto, Long.parseLong(session.getAttribute("userID").toString()));
         return "redirect:/course/";
     }
 
