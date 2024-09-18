@@ -3,12 +3,16 @@ package com.example.main.controller;
 import com.example.main.Exceptions.UserNotFoundException;
 import com.example.main.Exceptions.UserServiceLogicException;
 import com.example.main.dtos.ApiResponseDto;
+import com.example.main.dtos.UserStatus;
 import com.example.main.modals.Assignment;
 import com.example.main.modals.Course;
+import com.example.main.repository.UserRepository;
 import com.example.main.services.AssignmentService;
 import com.example.main.services.CourseService;
 import com.example.main.services.TodoService;
+import com.example.main.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.config.Task;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,10 +36,21 @@ public class MainController {
     @Autowired
     private CourseService courseService;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/dashboard")
     public String dashboardPage(Model model) throws UserNotFoundException, UserServiceLogicException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userID = auth.getName();
+
+        if(userRepository.findByUserID(Long.parseLong(userID)).get().getAccountStatus() == UserStatus.INACTIVE){
+            SecurityContextHolder.getContext().setAuthentication(null);
+            return "redirect:/perform_logout";
+        }
 
         //-------------------------------------TODO LIST -----------------------------------------------
         ApiResponseDto<?> tasksResponse = todoService.getTopDueSoonTasks(Long.valueOf(userID)).getBody();
