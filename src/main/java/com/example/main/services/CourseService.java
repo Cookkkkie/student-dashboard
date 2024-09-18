@@ -20,20 +20,16 @@ public class CourseService {
     @Autowired
     private UserRepository userRepository;
 
-    public void createCourse(CreateCourseDto createCourse){
-        Course c = new Course();
-        c.setName(createCourse.name);
-        courseRepository.save(c);
-    }
     public void createCourse(CreateCourseDto createCourse, long userID){
         Course c = new Course();
         c.setName(createCourse.name);
         c.setUser(userRepository.findById(userID).get());
         courseRepository.save(c);
     }
-    public ResponseEntity<ApiResponseDto<?>> getAllCourses() {
+
+    public ResponseEntity<ApiResponseDto<?>> getAllCourses(long userID) {
         try {
-            List<Course> courses = courseRepository.findAll();
+            List<Course> courses = courseRepository.findByUserId(userID);
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), courses));
@@ -43,19 +39,7 @@ public class CourseService {
                     .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "Error retrieving courses"));
         }
     }
-    public ResponseEntity<ApiResponseDto<?>> getAllCourses(long ID) {
-        try {
-            List<Course> courses = courseRepository.findAll();
-            List<Course> truecourselist = courses.stream().filter( (c) -> {return c.getUser().getUserID() == ID;}).toList();
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), truecourselist));
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "Error retrieving courses"));
-        }
-    }
+
     public void deleteById(Long id) {
         if(courseRepository.getCourseByCourseID(id) != null){
             courseRepository.deleteById(id);

@@ -3,6 +3,7 @@ package com.example.main.modals;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import java.time.LocalDate;
 
 @Setter
 @Getter
@@ -18,7 +19,7 @@ public class Assignment {
     private String name;
 
     @Column(name = "dueDate", nullable = false)
-    private String dueDate;
+    private LocalDate dueDate; // Changed to LocalDate
 
     @Column(name = "status", nullable = false)
     private String status;
@@ -29,11 +30,10 @@ public class Assignment {
 
     public Assignment() {}
 
-    public Assignment(String name, String dueDate, String status, Course course) {
+    public Assignment(String name, LocalDate dueDate, String status, Course course) {
         this.name = name;
         this.dueDate = dueDate;
         this.status = status;
         this.course = course;
     }
-
 }

@@ -16,23 +16,17 @@
         <ul class="components">
             <li><a href="#" th:href="@{/main/dashboard}">Dashboard</a></li>
             <li><a href="#" th:href="@{/assignment/}">Assignments</a></li>
-            <li><a href="#" th:href="@{/todo-list/}">To-Do List</a></li>
+            <li><a href="#" th:href="@{/todo-list}">To-Do List</a></li>
             <li><a href="#" th:href="@{/course/}">Courses</a></li>
-            <li><a href="/templates/user_management.html">User Management</a></li>
+            <!-- Additional sidebar links -->
         </ul>
-
-
-<!--        <li th:if="${#authentication.authorities.contains('ROLE_ADMIN')}">-->
-<!--            <a href="#" th:href="@{/user-management}">User Management</a>-->
-<!--        </li>-->
 
         <div class="sidebar-footer">
             <ul class="components">
                 <li><a href="#" th:href="@{/account}">View Account</a></li>
-                <!-- Logout form -->
                 <li>
                     <form action="/perform_logout" method="POST">
-                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/> <!-- CSRF token for security -->
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
                         <button type="submit" class="btn btn-link">Exit Account</button>
                     </form>
                 </li>
@@ -47,7 +41,7 @@
 
                 <div class="col-md-7 tables-section">
 
-                    <h3>Assignments</h3>
+                    <h3>Assignments Due Soon</h3>
                     <table class="table table-striped table-custom">
                         <thead>
                         <tr>
@@ -57,7 +51,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="assignment : ${assignments}">
+                        <tr th:each="assignment : ${assignmentsDueSoon}">
                             <td th:text="${assignment.name}">Math Homework</td>
                             <td th:text="${assignment.dueDate}">12/09/2024</td>
                             <td th:text="${assignment.status}" class="status-pending">Pending</td>
@@ -86,23 +80,24 @@
                     </table>
                 </div>
 
-
                 <div class="col-md-5">
-                    <h3>Courses</h3>
-                    <table class="table table-custom courses-list">
+                    <!-- Top 3 Courses with Most Assignments -->
+                    <h2>Top 3 Courses with Most Assignments</h2>
+                    <table class="table table-striped table-custom">
                         <thead>
                         <tr>
-                            <th>Name of Course</th>
-                            <th>Amount of Tasks</th>
+                            <th>Course Name</th>
+                            <th>Number of Assignments</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="course : ${courses}">
-                            <td th:text="${course.name}">Introduction to Biology</td>
-                            <td th:text="${course.taskCount}">5</td>
+                        <tr th:each="course : ${topCourses}">
+                            <td th:text="${course.name}">Course Name</td>
+                            <td th:text="${course.assignments.size()}">Number of Assignments</td>
                         </tr>
                         </tbody>
                     </table>
+
                 </div>
             </div>
         </div>

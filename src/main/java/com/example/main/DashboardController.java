@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 @SpringBootApplication
 @Controller
-@RequestMapping("/main")
+@RequestMapping("/")
 public class DashboardController {
 
 	@RequestMapping("/")
@@ -18,11 +18,4 @@ public class DashboardController {
 		SpringApplication.run(DashboardController.class, args);
 		MySqlDatabase.createTables();
 	}
-
-	@GetMapping("/dashboard")
-	public String dashboardPage() {
-		return "main";
-	}
-
-
 }
