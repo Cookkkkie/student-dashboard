@@ -5,7 +5,6 @@ import com.example.main.Exceptions.UserServiceLogicException;
 import com.example.main.dtos.ApiResponseDto;
 import com.example.main.modals.Task;
 import com.example.main.modals.UserMod;
-import com.example.main.repository.UserRepository;
 import com.example.main.services.TodoService;
 import com.example.main.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.security.core.Authentication;
 
 
@@ -28,8 +25,6 @@ public class TodoController {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserRepository userRepository;
 
     @GetMapping("/")
     public String viewTodoList(Model model) throws UserNotFoundException, UserServiceLogicException {
@@ -52,13 +47,13 @@ public class TodoController {
     @PostMapping("/create")
     public String createTask(@ModelAttribute Task task) throws UserNotFoundException, UserServiceLogicException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userID = auth.getName();
+        String email = auth.getName();
 
-//        ApiResponseDto<?> userResponse = userService.getUserByEmail(email).getBody();
-//        assert userResponse != null;
-//        UserMod user = (UserMod) userResponse.getResponse();
-        Optional<UserMod> user = userRepository.findByUserID(Long.parseLong(userID));
-        task.setUser(user.get());
+        ApiResponseDto<?> userResponse = userService.getUserByEmail(email).getBody();
+        assert userResponse != null;
+        UserMod user = (UserMod) userResponse.getResponse();
+
+        task.setUser(user);
 
         todoService.saveTask(task);
         return "redirect:/todo-list/";
