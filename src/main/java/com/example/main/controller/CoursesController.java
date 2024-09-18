@@ -21,7 +21,7 @@ public class CoursesController {
 
     @GetMapping("/")
     public String viewCourses(Model model, HttpSession session) {
-        System.out.println(session.getAttribute("userID").toString());
+//        System.out.println(session.getAttribute("userID").toString());
         ApiResponseDto<?> responseDto = courseService.getAllCourses(Long.parseLong(session.getAttribute("userID").toString())).getBody();
         if (responseDto != null && responseDto.getResponse() instanceof List) {
             @SuppressWarnings("unchecked")
