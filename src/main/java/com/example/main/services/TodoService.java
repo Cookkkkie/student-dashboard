@@ -46,10 +46,9 @@ public class TodoService {
     public ResponseEntity<ApiResponseDto<List<Task>>> getTopDueSoonTasks(Long userId) {
         try {
             LocalDate today = LocalDate.now();
-            LocalDate soonDue = today.plusDays(7); // Adjust this range as needed
+            LocalDate soonDue = today.plusDays(7); // Tasks due within the next 7 days
 
-            List<Task> tasks = taskRepository.findByUserUserIDAndDueDateBetween(
-                    userId, today, soonDue);
+            List<Task> tasks = taskRepository.findByUserUserIDAndDueDateBetween(userId, today, soonDue);
 
             // Sort by due date and limit to 3
             tasks = tasks.stream()
@@ -62,9 +61,6 @@ public class TodoService {
                     .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), tasks));
         } catch (Exception e) {
             return new ResponseEntity<>(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), null), HttpStatus.INTERNAL_SERVER_ERROR);
-//            return ResponseEntity
-//                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                    .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "Error retrieving tasks"));
         }
     }
 }

@@ -64,17 +64,16 @@
                         <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Content</th>
+
                             <th>Due Date</th>
                             <th>Status</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="todo : ${todos}">
-                            <td th:text="${todo.name}">Buy Books</td>
-                            <td th:text="${todo.content}">Purchase required textbooks for next semester</td>
-                            <td th:text="${todo.dueDate}">10/09/2024</td>
-                            <td th:text="${todo.status}">Not Started</td>
+                        <tr th:each="task : ${tasksDueSoon}">
+                            <td th:text="${task.name}"></td>
+                            <td th:text="${task.dueDate}"></td>
+                            <td th:text="${task.status ? 'Completed' : 'Pending'}"></td>
                         </tr>
                         </tbody>
                     </table>

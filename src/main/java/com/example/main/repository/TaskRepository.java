@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByUserUserID(Long userId);
-
     List<Task> findByUserUserIDAndDueDateBetween(Long userId, LocalDate startDate, LocalDate endDate);
+
 }
