@@ -16,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,10 +41,11 @@ class AssignmentServiceTest {
     @Test
     void createAssignment() {
         // given
+        LocalDate dueDate = LocalDate.parse("2024-09-18");
         CreateAssignmentDto createAssignmentDto = new CreateAssignmentDto(
                 "Test Assignment",
                 "PENDING",
-                "2024-09-18",
+                dueDate,
                 1L
         );
 
