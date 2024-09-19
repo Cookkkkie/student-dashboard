@@ -12,9 +12,6 @@ import java.util.List;
 public interface CourseRepository extends JpaRepository<Course, Long> {
     Course getCourseByCourseID(Long id);
 
-    @Query("SELECT c FROM Course c JOIN c.assignments a GROUP BY c ORDER BY COUNT(a) DESC")
-    List<Course> findTopCoursesByAssignmentCount();
-
     @Query("SELECT c FROM Course c WHERE c.user.userID = :userID")
     List<Course> findByUserId(@Param("userID") Long userID);
 

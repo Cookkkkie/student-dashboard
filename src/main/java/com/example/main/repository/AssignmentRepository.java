@@ -10,7 +10,6 @@ import java.util.List;
 @Repository
 public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
     List<Assignment> findByCourse_UserUserID(Long userId);
-    List<Assignment> findByCourse_UserUserIDAndDueDateBetween(Long userId, LocalDate startDate, LocalDate endDate);
     List<Assignment> findByCourse_UserUserIDAndDueDateLessThanEqual(Long userId, LocalDate dueDate);
 
 }

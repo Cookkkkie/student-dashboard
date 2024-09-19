@@ -47,10 +47,8 @@ public class AssignmentService {
             LocalDate today = LocalDate.now();
             LocalDate soonDue = today.plusDays(7);
 
-            // Fetch all assignments due soon
             List<Assignment> assignments = assignmentRepository.findByCourse_UserUserIDAndDueDateLessThanEqual(userId, soonDue);
 
-            // Optionally sort assignments by due date
             assignments = assignments.stream()
                     .sorted(Comparator.comparing(Assignment::getDueDate))
                     .limit(3)

@@ -54,20 +54,25 @@ public class TodoController {
     }
 
 
-
-
     @PostMapping("/create")
     public String createTask(@ModelAttribute Task task) throws UserNotFoundException, UserServiceLogicException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
 
         UserMod user = userRepository.findByUserID(Long.valueOf(email)).get();
-
         task.setUser(user);
+
+
+        LocalDate dueDate = task.getDueDate();
+        System.out.println(dueDate);
+        if (dueDate != null) {
+            task.setDueDate(dueDate);
+        }
 
         todoService.saveTask(task);
         return "redirect:/todo-list/";
     }
+
 
     @DeleteMapping("/delete/{id}")
     public String deleteTask(@PathVariable("id") Long id) {
