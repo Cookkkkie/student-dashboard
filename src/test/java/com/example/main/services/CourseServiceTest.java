@@ -69,10 +69,10 @@ class CourseServiceTest {
 
         List<Course> courses = Arrays.asList(course1, course2);
 
-        when(courseRepository.findAll()).thenReturn(courses);
+        when(courseRepository.findByUserId(1L)).thenReturn(courses);
 
         // when
-        ResponseEntity<ApiResponseDto<?>> response = courseService.getAllCourses(1);
+        ResponseEntity<ApiResponseDto<?>> response = courseService.getAllCourses(1L);
 
         // then
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -83,10 +83,10 @@ class CourseServiceTest {
     @Test
     void testGetAllCoursesWithException() {
         // given
-        when(courseRepository.findAll()).thenThrow(new RuntimeException("Database error"));
+        when(courseRepository.findByUserId(1L)).thenThrow(new RuntimeException("Database error"));
 
         // when
-        ResponseEntity<ApiResponseDto<?>> response = courseService.getAllCourses(1);
+        ResponseEntity<ApiResponseDto<?>> response = courseService.getAllCourses(1L);
 
         // then
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
