@@ -28,7 +28,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserMod user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
         List<GrantedAuthority> authorities = Collections.singletonList(
                 new SimpleGrantedAuthority("ROLE_" + user.getRole().toUpperCase())
         );
@@ -36,7 +35,9 @@ public class CustomUserDetailsService implements UserDetailsService {
                 CustomUserDetails(
                 (long) user.getUserID(),
                 user.getEmail(),
-                user.getPassword()
+                user.getPassword(),
+                user.getAccountStatus(),
+                user.getRole()
         );
     }
 }

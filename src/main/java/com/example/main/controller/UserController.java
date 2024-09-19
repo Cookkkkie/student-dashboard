@@ -40,7 +40,7 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @PutMapping("/update/{email}")
+    @GetMapping("/update/{email}")
     public ResponseEntity<ApiResponseDto<?>> updateUser(@Valid @RequestBody UserDetailsRequestDto userDetailsRequestDto, @PathVariable String email) throws UserNotFoundException, UserServiceLogicException {
         return userService.updateUser(userDetailsRequestDto, email);
     }

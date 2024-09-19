@@ -14,6 +14,13 @@
   <div class="mb-4">
     <h4>User Information</h4>
     <p><strong>User ID:</strong> <span th:text="${userID}"></span></p>
+    <p><strong>Role:</strong> <span th:text="${role}"></span></p>
+
+  </div>
+
+  <!-- Conditionally show Admin Panel button -->
+  <div class="mb-4" th:if="${isAdmin}">
+    <a href="/adminpanel/" class="btn btn-warning">Go to Admin Panel</a>
   </div>
 
   <!-- Change Password Form -->

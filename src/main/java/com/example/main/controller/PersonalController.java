@@ -34,8 +34,16 @@ public class PersonalController {
         String userID = auth.getName();
 
         Optional<UserMod> user = userRepository.findById(Long.valueOf(userID));
+        String role = String.valueOf(user.get().getRole());
+
         if (user.isPresent()) {
             model.addAttribute("userID", userID);
+            model.addAttribute("role", role);
+
+            boolean isAdmin = auth.getAuthorities().stream()
+                    .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+            model.addAttribute("isAdmin", isAdmin);
+
             return "personalaccount";
         }
         return "error";
