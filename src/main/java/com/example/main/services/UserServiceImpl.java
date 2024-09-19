@@ -128,24 +128,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<ApiResponseDto<?>> createAdmin(String email) {
         try {
-            if (userRepository.findByEmail(email).get().getRole() == UserRole.ADMIN) {
-                return ResponseEntity
-                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "Already have admin rules"));
-            }
-            Optional<UserMod> user = userRepository.findByEmail(email);
-            if(user.isPresent()) {
-                UserMod u = user.get();
-                u.setRole(UserRole.ADMIN);
-                userRepository.save(u);
+            Optional<UserMod> userOptional = userRepository.findByEmail(email);
+            if (userOptional.isPresent()) {
+                UserMod user = userOptional.get();
+                if (user.getRole() == UserRole.ADMIN) {
+                    return ResponseEntity
+                            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                            .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "Already have admin rules"));
+                }
+                user.setRole(UserRole.ADMIN);
+                userRepository.save(user);
                 return ResponseEntity
                         .status(HttpStatus.CREATED)
                         .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), "Admin created successfully"));
-
-            }
+            } else {
                 return ResponseEntity
                         .status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "Admin not implemented"));
+            }
         } catch (Exception e) {
             log.error("Failed to create admin: " + e.getMessage());
             return ResponseEntity
