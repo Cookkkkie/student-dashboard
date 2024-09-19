@@ -54,7 +54,7 @@
                         <tr th:each="assignment : ${assignmentsDueSoon}">
                             <td th:text="${assignment.name}">Math Homework</td>
                             <td th:text="${assignment.dueDate}">12/09/2024</td>
-                            <td th:text="${assignment.status}" class="status-pending">Pending</td>
+                            <td th:text="${assignment.status} == '1' ? 'Uncompleted' : 'Completed'" class="status-pending">Pending</td>
                         </tr>
                         </tbody>
                     </table>
