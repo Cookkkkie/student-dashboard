@@ -47,7 +47,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="assignment : ${assignments}">
-                        <td th:text="${assignment.status} == '1' ? 'Uncompleted' : 'Completed'"></td>
+                        <td th:text="${assignment.status}"></td>
                         <td th:text="${assignment.course.name}"></td>
                         <td th:text="${assignment.name}"></td>
                         <td th:text="${assignment.dueDate}"></td>
@@ -62,7 +62,9 @@
                             </form>
                         </td>
                     </tr>
+
                     </tbody>
+
                 </table>
             </div>
         </div>

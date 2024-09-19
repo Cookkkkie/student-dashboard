@@ -20,8 +20,8 @@ public class Task {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Column(nullable = false)
-    private Boolean status;
+    @Column
+    private Boolean status=false;
 
     @Column(name = "due_date")
     @Temporal(TemporalType.DATE)

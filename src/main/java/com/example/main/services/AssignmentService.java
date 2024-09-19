@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 public class AssignmentService {
@@ -46,9 +47,10 @@ public class AssignmentService {
             LocalDate today = LocalDate.now();
             LocalDate soonDue = today.plusDays(7);
 
-            List<Assignment> assignments = assignmentRepository.findByCourse_UserUserIDAndDueDateBetween(
-                    userId, today, soonDue);
+            // Fetch all assignments due soon
+            List<Assignment> assignments = assignmentRepository.findByCourse_UserUserIDAndDueDateLessThanEqual(userId, soonDue);
 
+            // Optionally sort assignments by due date
             assignments = assignments.stream()
                     .sorted(Comparator.comparing(Assignment::getDueDate))
                     .limit(3)
@@ -62,6 +64,7 @@ public class AssignmentService {
                     .status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
     public ResponseEntity<ApiResponseDto<?>> getAssignmentsByUserId(Long userId) {
         try {
             List<Assignment> assignments = assignmentRepository.findByCourse_UserUserID(userId);
@@ -74,6 +77,7 @@ public class AssignmentService {
                     .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "Error retrieving assignments"));
         }
     }
+
     public void deleteById(Long id) {
         if (assignmentRepository.existsById(id)) {
             assignmentRepository.deleteById(id);

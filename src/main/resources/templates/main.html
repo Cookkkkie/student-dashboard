@@ -52,11 +52,12 @@
                         </thead>
                         <tbody>
                         <tr th:each="assignment : ${assignmentsDueSoon}">
-                            <td th:text="${assignment.name}">Math Homework</td>
-                            <td th:text="${assignment.dueDate}">12/09/2024</td>
-                            <td th:text="${assignment.status} == '1' ? 'Uncompleted' : 'Completed'" class="status-pending">Pending</td>
+                            <td th:text="${assignment.name}"></td>
+                            <td th:text="${assignment.dueDate}"></td>
+                            <td th:text="${assignment.status == 'Overdue' ? 'Overdue' : 'Not overdue'}"></td>
                         </tr>
                         </tbody>
+
                     </table>
 
                     <h3>To-Do List</h3>
@@ -70,12 +71,15 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <tbody>
                         <tr th:each="task : ${tasksDueSoon}">
                             <td th:text="${task.name}"></td>
                             <td th:text="${task.dueDate}"></td>
-                            <td th:text="${task.status ? 'Completed' : 'Pending'}"></td>
+                            <td th:text="${task.status == true ? 'Overdue' : 'Not overdue'}"></td>
+
                         </tr>
                         </tbody>
+
                     </table>
                 </div>
 

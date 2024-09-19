@@ -22,6 +22,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,17 +50,19 @@ public class AssignmentController {
     public String viewAssignments(Model model) throws UserNotFoundException, UserServiceLogicException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userID = auth.getName();
-        //System.out.println("Email"+email);
-        //System.out.println("UserID"+session.getAttribute("userID").toString());
 
-//        UserMod user = userRepository.getById(Long.valueOf(userID));
         ApiResponseDto<?> responseDto = assignmentService.getAssignmentsByUserId(Long.valueOf(userID)).getBody();
         if (responseDto != null && responseDto.getResponse() instanceof List) {
             @SuppressWarnings("unchecked")
             List<Assignment> assignments = (List<Assignment>) responseDto.getResponse();
-            for(Assignment assignment : assignments) {
-                System.out.println(assignment.getName());
+
+            // Check if assignments are overdue
+            LocalDate now = LocalDate.now();
+            for (Assignment assignment : assignments) {
+                boolean isOverdue = assignment.getDueDate().isBefore(now);
+                assignment.setStatus(isOverdue ? "Overdue" : "Not overdue");
             }
+
             model.addAttribute("assignments", assignments);
         } else {
             model.addAttribute("assignments", List.of());
@@ -66,6 +70,7 @@ public class AssignmentController {
 
         return "assignment";
     }
+
 
 
     @DeleteMapping("/delete/{id}")
@@ -80,9 +85,6 @@ public class AssignmentController {
         String userID = auth.getName();
 
         UserMod u = userRepository.findByUserID(Long.parseLong(userID)).get();
-       // assert userResponse != null;
-       // UserMod user = (UserMod) userResponse.getResponse();
-//        System.out.println(user.getUserID());
         Course course = courseRepository.getCourseByCourseID(createAssignmentDto.getCourseID());
         if((courseRepository.getCourseByCourseID(createAssignmentDto.getCourseID()).getUser().getUserID() == Integer.parseInt(userID))){
 

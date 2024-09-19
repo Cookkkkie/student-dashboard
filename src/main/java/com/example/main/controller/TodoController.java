@@ -13,6 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.security.core.Authentication;
 
@@ -30,9 +32,9 @@ public class TodoController {
     @Autowired
     private UserRepository userRepository;
 
+
     @GetMapping("/")
     public String viewTodoList(Model model) throws UserNotFoundException, UserServiceLogicException {
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userID = auth.getName();
 
@@ -41,10 +43,16 @@ public class TodoController {
 
         List<Task> tasks = (List<Task>) tasksResponse.getResponse();
 
-        model.addAttribute("tasks", tasks);
+        LocalDate now = LocalDate.now();
+        for (Task task : tasks) {
+            boolean isOverdue = task.getDueDate().isBefore(now);
+            task.setStatus(isOverdue);
+        }
 
+        model.addAttribute("tasks", tasks);
         return "todo-list";
     }
+
 
 
 
@@ -52,12 +60,8 @@ public class TodoController {
     public String createTask(@ModelAttribute Task task) throws UserNotFoundException, UserServiceLogicException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
-        System.out.println(email);
 
-        //ApiResponseDto<?> userResponse = userService.getUserByEmail(email).getBody();
-        //assert userResponse != null;
         UserMod user = userRepository.findByUserID(Long.valueOf(email)).get();
-        //UserMod user = (UserMod) userResponse.getResponse();
 
         task.setUser(user);
 

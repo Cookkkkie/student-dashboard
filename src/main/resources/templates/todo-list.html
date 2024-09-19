@@ -47,7 +47,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="task : ${tasks}">
-                        <td th:text="${task.status ? 'Completed' : 'Pending'}"></td>
+                        <td th:text="${task.status ? 'Overdue' : 'Not overdue'}"></td>
                         <td th:text="${task.name}"></td>
                         <td th:text="${task.content}"></td>
                         <td th:text="${task.dueDate}"></td>

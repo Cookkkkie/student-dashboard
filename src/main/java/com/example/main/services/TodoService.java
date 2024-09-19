@@ -22,7 +22,7 @@ public class TodoService {
 
     public ResponseEntity<ApiResponseDto<List<Task>>> getTasksByUserId(Long userId) {
         try {
-            List<Task> tasks = taskRepository.findByUserUserID(userId);  // Assuming this method is correct
+            List<Task> tasks = taskRepository.findByUserUserID(userId);
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), tasks));
@@ -46,11 +46,12 @@ public class TodoService {
     public ResponseEntity<ApiResponseDto<List<Task>>> getTopDueSoonTasks(Long userId) {
         try {
             LocalDate today = LocalDate.now();
-            LocalDate soonDue = today.plusDays(7); // Tasks due within the next 7 days
+            LocalDate soonDue = today.plusDays(7);
+            List<Task> tasks = taskRepository.findByUserUserIDAndDueDateLessThanEqual(userId, soonDue)
+                    .stream()
+                    .filter(task -> task.getDueDate().isBefore(today) || task.getDueDate().isEqual(today) || task.getDueDate().isBefore(soonDue))
+                    .collect(Collectors.toList());
 
-            List<Task> tasks = taskRepository.findByUserUserIDAndDueDateBetween(userId, today, soonDue);
-
-            // Sort by due date and limit to 3
             tasks = tasks.stream()
                     .sorted(Comparator.comparing(Task::getDueDate))
                     .limit(3)

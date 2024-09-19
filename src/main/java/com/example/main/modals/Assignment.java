@@ -21,7 +21,7 @@ public class Assignment {
     @Column(name = "dueDate", nullable = false)
     private LocalDate dueDate; // Changed to LocalDate
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     private String status;
 
     @ManyToOne
