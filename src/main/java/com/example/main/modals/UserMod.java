@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Setter
 @Getter
 @Entity
@@ -57,6 +59,25 @@ public class UserMod {
         this.password = password;
         this.accountStatus = accountStatus;
         this.role = role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserMod userMod = (UserMod) o;
+        return userID == userMod.userID &&
+                Objects.equals(name, userMod.name) &&
+                Objects.equals(last_name, userMod.last_name) &&
+                Objects.equals(email, userMod.email) &&
+                Objects.equals(password, userMod.password) &&
+                accountStatus == userMod.accountStatus &&
+                role == userMod.role;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userID, name, last_name, email, password, accountStatus, role);
     }
 
 }
