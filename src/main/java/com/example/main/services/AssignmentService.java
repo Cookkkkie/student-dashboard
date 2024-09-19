@@ -13,8 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
-
+import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class AssignmentService {
@@ -39,6 +41,27 @@ public class AssignmentService {
         assignmentRepository.save(assignment);
     }
 
+    public ResponseEntity<ApiResponseDto<List<Assignment>>> getTopDueSoonAssignments(Long userId) {
+        try {
+            LocalDate today = LocalDate.now();
+            LocalDate soonDue = today.plusDays(7);
+
+            List<Assignment> assignments = assignmentRepository.findByCourse_UserUserIDAndDueDateBetween(
+                    userId, today, soonDue);
+
+            assignments = assignments.stream()
+                    .sorted(Comparator.comparing(Assignment::getDueDate))
+                    .limit(3)
+                    .collect(Collectors.toList());
+
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new ApiResponseDto<>(ApiResponseStatus.SUCCESS.name(), assignments));
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
     public ResponseEntity<ApiResponseDto<?>> getAssignmentsByUserId(Long userId) {
         try {
             List<Assignment> assignments = assignmentRepository.findByCourse_UserUserID(userId);
@@ -51,7 +74,6 @@ public class AssignmentService {
                     .body(new ApiResponseDto<>(ApiResponseStatus.FAIL.name(), "Error retrieving assignments"));
         }
     }
-
     public void deleteById(Long id) {
         if (assignmentRepository.existsById(id)) {
             assignmentRepository.deleteById(id);

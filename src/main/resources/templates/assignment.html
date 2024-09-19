@@ -18,7 +18,7 @@
         </ul>
         <div class="sidebar-footer">
             <ul class="components">
-                <li><a href="#" th:href="@{/account}">View Account</a></li>
+                <li><a href="#" th:href="@{/account/}">View Account</a></li>
                 <li>
                     <form action="/perform_logout" method="POST">
                         <input type="hidden" name="_csrf" th:value="${_csrf.token}"/> <!-- CSRF token for security -->
@@ -47,7 +47,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="assignment : ${assignments}">
-                        <td th:text="${assignment.status}"></td>
+                        <td th:text="${assignment.status} == '1' ? 'Uncompleted' : 'Completed'"></td>
                         <td th:text="${assignment.course.name}"></td>
                         <td th:text="${assignment.name}"></td>
                         <td th:text="${assignment.dueDate}"></td>

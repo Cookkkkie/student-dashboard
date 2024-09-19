@@ -7,4 +7,9 @@ public enum UserRole {
     public String toUpperCase() {
         return name().toUpperCase();
     }
+
+    @Override
+    public String toString() {
+        return name();
+    }
 }

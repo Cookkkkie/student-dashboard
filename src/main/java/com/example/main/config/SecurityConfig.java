@@ -45,6 +45,7 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/login", "/register").permitAll()
                                 .requestMatchers("/api/users/**").hasRole("ADMIN")
+                                .requestMatchers("/adminpanel/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .formLogin(form ->

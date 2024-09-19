@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>View Account</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+  <h2>Account Settings</h2>
+  <hr>
+
+  <!-- User Info Section -->
+  <div class="mb-4">
+    <h4>User Information</h4>
+    <p><strong>User ID:</strong> <span th:text="${userID}"></span></p>
+    <p><strong>Role:</strong> <span th:text="${role}"></span></p>
+
+  </div>
+
+  <!-- Conditionally show Admin Panel button -->
+  <div class="mb-4" th:if="${isAdmin}">
+    <a href="/adminpanel/" class="btn btn-warning">Go to Admin Panel</a>
+  </div>
+
+  <!-- Change Password Form -->
+  <div class="mb-4">
+    <h4>Change Password</h4>
+    <form th:action="@{/account/change-password}" method="post">
+      <input type="hidden" name="_csrf" th:value="${_csrf.token}"/> <!-- CSRF Token -->
+      <div class="mb-3">
+        <label for="oldPassword" class="form-label">Old Password</label>
+        <input type="password" class="form-control" id="oldPassword" name="oldPassword" placeholder="Enter old password" required>
+      </div>
+      <div class="mb-3">
+        <label for="newPassword" class="form-label">New Password</label>
+        <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Enter new password" required>
+      </div>
+      <div class="mb-3">
+        <label for="confirmNewPassword" class="form-label">Confirm New Password</label> <!-- Updated field name -->
+        <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" placeholder="Confirm new password" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Change Password</button>
+    </form>
+  </div>
+
+  <!-- Delete Account Section -->
+  <div class="mb-4">
+    <h4>Delete Account</h4>
+    <form th:action="@{/account/delete-account}" method="post"> <!-- Updated action URL -->
+      <input type="hidden" name="_csrf" th:value="${_csrf.token}"/> <!-- CSRF Token -->
+      <div class="mb-3">
+        <label for="confirmDelete" class="form-label">Type "DELETE" to confirm:</label>
+        <input type="text" class="form-control" id="confirmDelete" name="confirmDelete" placeholder="Type DELETE to confirm" required>
+      </div>
+      <button type="submit" class="btn btn-danger">Delete Account</button>
+    </form>
+  </div>
+
+  <!-- Additional Settings (Optional) -->
+  <div class="mb-4">
+    <h4>Other Settings</h4>
+    <p>Additional options for account management can be added here in the future.</p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

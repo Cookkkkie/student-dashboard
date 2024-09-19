@@ -3,45 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management</title>
+    <title>Admin Panel - User Management</title>
     <link rel="stylesheet" href="/adminstyles.css">
     <meta name="csrf-token" content="${_csrf.token}">
 </head>
 <body>
 <h1>User Management</h1>
 
-<!-- Give Admin Privileges -->
+<!-- Section: Give Admin Privileges -->
 <h2>Give Admin Privileges</h2>
 <form id="giveAdminForm">
-    <input type="email" name="email" id="createAdminEmail" placeholder="Email" required>
-    <button type="submit">Give Admin</button>
+    <label for="createAdminEmail">Email:</label>
+    <input type="email" name="email" id="createAdminEmail" placeholder="Enter user email" required>
+    <button type="submit">Grant Admin Privileges</button>
 </form>
 
-<!-- Get User By Email -->
+<!-- Section: Get User by Email -->
 <h2>Get User By Email</h2>
 <form id="getUserForm">
-    <input type="email" name="email" id="getUserEmail" placeholder="User Email" required>
-    <button type="submit">Get User</button>
+    <label for="getUserEmail">Email:</label>
+    <input type="email" name="email" id="getUserEmail" placeholder="Enter user email" required>
+    <button type="submit">Retrieve User</button>
 </form>
 
-<!-- Get All Users -->
+<!-- Section: Get All Users -->
 <h2>Get All Users</h2>
 <form id="getAllUsersForm">
-    <button type="submit">Get All Users</button>
+    <button type="submit">List All Users</button>
 </form>
 
-<!-- Delete User -->
+<!-- Section: Delete User -->
 <h2>Delete User</h2>
 <form id="deleteUserForm">
-    <input type="email" name="email" id="deleteUserEmail" placeholder="Email" required>
+    <label for="deleteUserEmail">Email:</label>
+    <input type="email" name="email" id="deleteUserEmail" placeholder="Enter user email" required>
     <button type="submit">Delete User</button>
 </form>
 
+<!-- Response Section -->
 <div id="response"></div>
 
+<!-- JavaScript for Handling Forms -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const responseDiv = document.getElementById('response');
+
+        const handleResponse = (data) => {
+            responseDiv.innerText = JSON.stringify(data, null, 2);
+        };
+
+        const handleError = (error) => {
+            responseDiv.innerText = `Error: ${error}`;
+        };
 
         // Give Admin Privileges
         document.getElementById('giveAdminForm').addEventListener('submit', function (e) {
@@ -49,15 +63,15 @@
             const email = document.getElementById('createAdminEmail').value;
 
             fetch(`/api/users/giveAdmin/${email}`, {
-                method: 'GET',
+                method: 'GET',  // Use POST for such actions
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-Token': csrfToken
                 }
             })
                 .then(response => response.json())
-                .then(data => document.getElementById('response').innerText = JSON.stringify(data))
-                .catch(error => console.error('Error:', error));
+                .then(data => handleResponse(data))
+                .catch(error => handleError(error));
         });
 
         // Get User By Email
@@ -72,8 +86,8 @@
                 }
             })
                 .then(response => response.json())
-                .then(data => document.getElementById('response').innerText = JSON.stringify(data))
-                .catch(error => console.error('Error:', error));
+                .then(data => handleResponse(data))
+                .catch(error => handleError(error));
         });
 
         // Get All Users
@@ -87,8 +101,8 @@
                 }
             })
                 .then(response => response.json())
-                .then(data => document.getElementById('response').innerText = JSON.stringify(data))
-                .catch(error => console.error('Error:', error));
+                .then(data => handleResponse(data))
+                .catch(error => handleError(error));
         });
 
         // Delete User
@@ -97,14 +111,14 @@
             const email = document.getElementById('deleteUserEmail').value;
 
             fetch(`/api/users/delete/${email}`, {
-                method: 'GET',
+                method: 'GET',  // Use DELETE for such actions
                 headers: {
                     'X-CSRF-Token': csrfToken
                 }
             })
                 .then(response => response.json())
-                .then(data => document.getElementById('response').innerText = JSON.stringify(data))
-                .catch(error => console.error('Error:', error));
+                .then(data => handleResponse(data))
+                .catch(error => handleError(error));
         });
     });
 </script>
