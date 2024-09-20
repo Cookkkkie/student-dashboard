@@ -92,6 +92,9 @@ public class PersonalController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userID = auth.getName();
         //System.out.println(userRepository.findByUserID(Long.valueOf(userID)).get().getEmail());
+        if(!(userRepository.findByUserID(Long.valueOf(userID)).isPresent())){
+            throw new RuntimeException(new UserNotFoundException("User doesn't exist"));
+        }
         try {
             userService.softDeleteUser(userRepository.findByUserID(Long.valueOf(userID)).get().getEmail());
             SecurityContextHolder.clearContext();

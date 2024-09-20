@@ -83,7 +83,9 @@ public class AssignmentController {
     public String createAssignment(@ModelAttribute CreateAssignmentDto createAssignmentDto) throws UserNotFoundException, UserServiceLogicException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userID = auth.getName();
-
+        if(!userRepository.findByUserID(Long.parseLong(userID)).isPresent()){
+            throw new UserNotFoundException("User with ID " + userID + " doesn't exist");
+        }
         UserMod u = userRepository.findByUserID(Long.parseLong(userID)).get();
         Course course = courseRepository.getCourseByCourseID(createAssignmentDto.getCourseID());
         if((courseRepository.getCourseByCourseID(createAssignmentDto.getCourseID()).getUser().getUserID() == Integer.parseInt(userID))){
@@ -92,7 +94,7 @@ public class AssignmentController {
                 assignmentService.createAssignment(createAssignmentDto);
             }
         }else{
-            System.out.printf("WRONG ID\n");
+            throw new RuntimeException("Course and userID mismatch");
         }
 
 
