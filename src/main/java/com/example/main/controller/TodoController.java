@@ -58,7 +58,9 @@ public class TodoController {
     public String createTask(@ModelAttribute Task task) throws UserNotFoundException, UserServiceLogicException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
-
+        if(!userRepository.findByUserID(Long.valueOf(email)).isPresent()){
+            throw new UserNotFoundException("User with ID " + email + " doesn't exist.");
+        }
         UserMod user = userRepository.findByUserID(Long.valueOf(email)).get();
         task.setUser(user);
 

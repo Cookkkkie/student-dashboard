@@ -46,7 +46,9 @@ public class MainController {
     public String dashboardPage(Model model) throws UserNotFoundException, UserServiceLogicException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userID = auth.getName();
-
+        if(!userRepository.findByUserID(Long.parseLong(userID)).isPresent()){
+            throw new UserNotFoundException("User with ID " + userID + " doesn't exist.");
+        }
         if (userRepository.findByUserID(Long.parseLong(userID)).get().getAccountStatus() == UserStatus.INACTIVE) {
             SecurityContextHolder.getContext().setAuthentication(null);
             return "redirect:/perform_logout";

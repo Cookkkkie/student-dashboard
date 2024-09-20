@@ -1,5 +1,6 @@
 package com.example.main.services;
 
+import com.example.main.Exceptions.UserNotFoundException;
 import com.example.main.dtos.ApiResponseDto;
 import com.example.main.dtos.ApiResponseStatus;
 import com.example.main.dtos.CreateCourseDto;
@@ -23,6 +24,9 @@ public class CourseService {
     public void createCourse(CreateCourseDto createCourse, long userID){
         Course c = new Course();
         c.setName(createCourse.name);
+        if(!userRepository.findById(userID).isPresent()){
+            throw new RuntimeException("User with ID " + userID + " doesn't exist.");
+        }
         c.setUser(userRepository.findById(userID).get());
         courseRepository.save(c);
     }

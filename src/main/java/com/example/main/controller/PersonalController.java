@@ -34,9 +34,10 @@ public class PersonalController {
         String userID = auth.getName();
 
         Optional<UserMod> user = userRepository.findById(Long.valueOf(userID));
-        String role = String.valueOf(user.get().getRole());
+
 
         if (user.isPresent()) {
+            String role = String.valueOf(user.get().getRole());
             model.addAttribute("userID", userID);
             model.addAttribute("role", role);
 
@@ -90,7 +91,7 @@ public class PersonalController {
     public String deleteAccount(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userID = auth.getName();
-        System.out.println(userRepository.findByUserID(Long.valueOf(userID)).get().getEmail());
+        //System.out.println(userRepository.findByUserID(Long.valueOf(userID)).get().getEmail());
         try {
             userService.softDeleteUser(userRepository.findByUserID(Long.valueOf(userID)).get().getEmail());
             SecurityContextHolder.clearContext();
